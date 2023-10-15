@@ -11,7 +11,8 @@ Ejecución del turno:
 a) El jugador recibe una carta aleatoria
 
 b) El jugador decide si usar esa carta, guardarla, o usar otra carta
-┏━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┑
+
+┏━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
 ┃                   ┃    Interacción                                                                ┃
 ┃     Actividades   ┃━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┫
 ┃                   ┃      Tesoro          ┃      Espía      ┃      Vacío      ┃      Inactivo      ┃
