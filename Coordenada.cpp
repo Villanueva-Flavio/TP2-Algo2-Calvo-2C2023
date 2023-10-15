@@ -1,8 +1,10 @@
 #include "./Headers/Coordenada.h"
+#include <iostream>
 
-Coordenada::Coordenada(int x, int y){
+Coordenada::Coordenada(int x, int y, int z){
     this->x = x;
     this->y = y;
+    this->z = z;
 }
 
 int Coordenada::getX(){
@@ -25,25 +27,30 @@ void Coordenada::setY(int y){
     this->y = y;
 }
 
-void Coordenada::setCoordenada(int x, int y){
+void Coordenada::setZ(int z){
+    this->z = z;
+}
+
+void Coordenada::setCoordenada(int x, int y, int z){
     this->x = x;
     this->y = y;
+    this->z = z;
 }
 
-bool Coordenada::operator==(const Coordenada& c) const{
-    return (this->x == c.x && this->y == c.y);
+std::ostream& operator<<(std::ostream& os, const Coordenada& c){
+    os << "(" << c.x << ", " << c.y << c.z << ")";
+    return os;
 }
 
-bool Coordenada::operator!=(const Coordenada& c) const{
-    return (this->x != c.x || this->y != c.y);
+std::istream& operator>>(std::istream& is, Coordenada& c){
+    is >> c.x >> c.y >> c.z;
+    return is;
 }
 
-void Coordenada::operator>>(Coordenada& c){
-    c.x = this->x;
-    c.y = this->y;
+bool operator==(const Coordenada& c1, const Coordenada& c2){
+    return c1.x == c2.x && c1.y == c2.y && c1.z == c2.z;
 }
 
-void Coordenada::operator<<(Coordenada& c){
-    this->x = c.x;
-    this->y = c.y;
+bool operator!=(const Coordenada& c1, const Coordenada& c2){
+    return !(c1 == c2);
 }

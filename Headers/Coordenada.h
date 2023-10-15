@@ -5,23 +5,26 @@ class Coordenada{
     private:
     int x;
     int y;
+    int z;
 
     public:
-    Coordenada(int x, int y);
+    Coordenada(int x, int y, int z);
 
     int getX();
     int getY();
+    int getZ();
     Coordenada getCoordenada();
 
     void setX(int x);
     void setY(int y);
-    void setCoordenada(int x, int y);
+    void setZ(int Z);
+    void setCoordenada(int x, int y, int z);
 
-    bool operator==(const Coordenada& c) const;
-    bool operator!=(const Coordenada& c) const;
-    
-    void operator>>(Coordenada& c);
-    void operator<<(Coordenada& c);
+    friend std::ostream& operator<<(std::ostream& os, const Coordenada& c);
+    friend std::istream& operator>>(std::istream& is, Coordenada& c);
+    friend bool operator==(const Coordenada& c1, const Coordenada& c2);
+    friend bool operator!=(const Coordenada& c1, const Coordenada& c2);
+
 };
 
 #endif
