@@ -1,5 +1,7 @@
 #include <string>
 #include "Coordenada.h"
+#include "Tablero.h"
+#include "Ficha.h"
 
 class {
 public:
@@ -7,7 +9,16 @@ public:
     void iniciarJuego();
 
     void jugar();
+
+    int mostrarEstadoPartida();
+
 private:
+    //Atributos
+    Lista<Jugador*>* jugadores;
+    Tablero<Ficha*>* tablero;
+    int estadoPartida;
+
+
     ~Juego();
     //Iniciar juego
     void preguntarJugadores();
@@ -19,6 +30,7 @@ private:
     bool validarCantidadJugadores();
     bool validarNombre(std::string nombre);
     bool coordenadaValida(Coordenada pos);
+    bool validarLimitePosicion(Coordenada pos);
     
     //Jugar
     void jugarTurno();
@@ -34,19 +46,17 @@ private:
     bool validarDecisionCarta(std::string decision);
     bool validarCarta(int index);
     
-    //Mina
-    void colocarMina();
-    void preguntarPosicionMina(Coordenada* Pos);
-    void handlerMina(Coordenada pos);//Redundante?
+    //Fichas
+    void handlerFichasDelTurno(TipoFichas tipo);
+    void colocarFicha(TipoFichas tipo, Coordenada* pos);
+    void preguntarPosicion(TipoFichas tipo, Coordenada* pos);
+    void handlerFicha(TipoFichas tipo, Coordenada pos);
 
-    //Espia
-    void colocarEspia();
-    void preguntarPosicionEspia(Coordenada* Pos);
-    void handlerEspia(Coordenada pos);//Redundante?
+    bool validarNumeroFicha(int index);
 
-    //Tesoro
-    void moverTesoro();
-    void preguntarTesoro(int* index);
-    void preguntarPosicionTesoro(Coordenada* Pos);
-    void handlerTesoro(Coordenada pos);//Redundante?
-}
+    //Otro
+    void mostrarTablero(int jugador);
+    void mostrarAlertas(int jugador);
+    
+
+};

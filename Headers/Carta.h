@@ -13,6 +13,8 @@ class Carta {
         ~Carta();
         void agregarCarta();
         void removerCarta();
+        TipoCartas getTipo();
+        int getCantidad();
 };
 
 #endif

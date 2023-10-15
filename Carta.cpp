@@ -12,3 +12,11 @@ void Carta::agregarCarta(){
 void Carta::removerCarta(){
     this->cantidad -= 1; 
 }
+
+TipoCartas Carta::getTipo(){
+    return this->tipo;
+}
+
+int Carta::getCantidad(){
+    return this->cantidad;
+}

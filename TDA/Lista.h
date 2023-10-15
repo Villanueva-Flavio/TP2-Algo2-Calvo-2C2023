@@ -44,6 +44,10 @@ public:
 	// POST: Crea un nuevo nodo al final de la lista
 	void add(T data);
 
+	// PRE: Recibe un int de indice
+	// POST: Elimina un nodo de la lista
+	void remove(int x);
+
 	// POST: Obtiene la posicion del iterador
 	int getIter();
 
@@ -116,6 +120,21 @@ template <class T> void Lista<T>::add(T data) {
 		this->iterador->setSig(nuevo);
 	}
 	this->size++;
+}
+
+template <class T> void Lista<T>::remove(int x) {
+	irANodo(x);
+	if(this->getSize() > 1){
+		this->anterior->setSig(this->siguiente);
+		this->siguiente->setAnt(this->anterior);
+		if(this->iterador == this->primero){
+			this->primero = this->siguiente;
+		}
+		delete this->iterador;
+	} else {
+		delete this->iterador;
+		this->primero = NULL;
+	}
 }
 
 template <class T> int Lista<T>::getIter() {
