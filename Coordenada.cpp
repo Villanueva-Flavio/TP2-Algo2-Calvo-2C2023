@@ -15,6 +15,10 @@ int Coordenada::getY(){
     return this->y;
 }
 
+int Coordenada::getZ(){
+    return this->z;
+}
+
 Coordenada Coordenada::getCoordenada(){
     return *this;
 }
