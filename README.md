@@ -1,9 +1,11 @@
 ▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂
 
+
 Descripción breve del juego:
 
 N jugadores en un mapa de tamaño X Y Z, con M tesoros.
 Donde pierden los que se quedan sin tesoros, y es por turno
+
 ▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂
 
 Ejecución del turno:
