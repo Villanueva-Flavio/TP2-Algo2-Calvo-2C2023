@@ -42,7 +42,7 @@ void Coordenada::setCoordenada(int x, int y, int z){
 }
 
 std::ostream& operator<<(std::ostream& os, const Coordenada& c){
-    os << "(" << c.x << ", " << c.y << c.z << ")";
+    os << "(" << c.x << ", " << c.y << ", "<< c.z << ")";
     return os;
 }
 

@@ -14,10 +14,7 @@ class Ficha{
         TipoFichas getTipo();
         Coordenada getPosicion();
         void setPosicion(Coordenada posicion);
-        virtual void interactuarConTesoro();
-        virtual void interactuarConEspia();
-        virtual void interactuarConVacio();
-        virtual void interactuarConInactivo();
+        void setTipo (TipoFichas tipo);
 };
 
 #endif

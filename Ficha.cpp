@@ -1,9 +1,6 @@
-#include "Ficha.h"
+#include "../Headers/Ficha.h"
 
-Ficha::Ficha(TipoFichas tipo, Coordenada posicion){
-    this->tipo = tipo;
-    this->posicion = posicion;
-}
+Ficha::Ficha(TipoFichas tipo, Coordenada posicion) : posicion(posicion), tipo(tipo) {}
 
 TipoFichas Ficha::getTipo(){
     return this->tipo;
@@ -15,4 +12,8 @@ Coordenada Ficha::getPosicion(){
 
 void Ficha::setPosicion(Coordenada posicion){
     this->posicion = posicion;
+}
+
+void Ficha::setTipo(TipoFichas tipo){
+    this->tipo = tipo;
 }

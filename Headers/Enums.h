@@ -40,5 +40,5 @@ enum Capa{
     FICHA_MINA,
     FICHA_TESORO
 };
-}
+
 #endif

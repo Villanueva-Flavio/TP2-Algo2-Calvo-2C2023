@@ -2,14 +2,13 @@
 #include "Coordenada.h"
 #include "Tablero.h"
 #include "Ficha.h"
+#include "Jugador.h"
 
-class {
+class Juego{
 public:
-    Juego();
-    void iniciarJuego();
-
+    Juego(int jugadores);
+    void iniciarJuego(int jugadores);
     void jugar();
-
     int mostrarEstadoPartida();
 
 private:
@@ -21,13 +20,11 @@ private:
 
     ~Juego();
     //Iniciar juego
-    void preguntarJugadores();
-    void cargarTablero();
-    void cargarFichas();
-    void preguntarNombres();
-    void cargarJugadores();
+    void cargarTablero(); //
+    void cargarTesoros(); //
+    string preguntarNombre();
+    void cargarJugadores(int jugadores);
 
-    bool validarCantidadJugadores();
     bool validarNombre(std::string nombre);
     bool coordenadaValida(Coordenada pos);
     bool validarLimitePosicion(Coordenada pos);
