@@ -41,4 +41,12 @@ enum Capa{
     FICHA_TESORO
 };
 
+//Decidiones
+enum Decision{
+    SI,
+    NO,
+    SALIR,
+    NINGUNA
+};
+
 #endif

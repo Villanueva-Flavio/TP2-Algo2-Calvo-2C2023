@@ -33,7 +33,8 @@ Carta* Mazo::obtenerCarta(TipoCartas tipo){
                 return this->mazo->getLData(i);
             }
         }
-    } catch (int e) {
+        throw tipo;
+    } catch (TipoCartas e) {
         std::cout << "CardNotFoundException ("<< e <<")" << std::endl;
     }
 }
@@ -61,4 +62,28 @@ void Mazo::imprimirMazo(std::string jugador){
 
 Lista<Carta*>* Mazo::obtenerMazo(){
     return this->mazo;
+}
+
+void Mazo::usarCarta(TipoCartas tipo){
+    switch(tipo){
+        case BLINDAJE:
+            
+            this->removerCarta(BLINDAJE);
+            break;
+        case RADAR:
+            this->removerCarta(RADAR);
+            break;
+        case PARTIR_TESORO:
+            this->removerCarta(PARTIR_TESORO);
+            break;
+        case AGENTES_DURMIENTES:
+            this->removerCarta(AGENTES_DURMIENTES);
+            break;
+        case PALA_PARA_TUNEL:
+            this->removerCarta(PALA_PARA_TUNEL);
+            break;
+        case BOMBA_DE_RACIMO:
+            this->removerCarta(BOMBA_DE_RACIMO);
+            break;
+    }
 }

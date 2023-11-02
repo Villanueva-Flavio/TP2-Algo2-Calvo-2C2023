@@ -1,5 +1,6 @@
 #include "./Headers/Juego.h"
 #include <string>
+#include "./Headers/Enums.h"
 
 using namespace std;
 
@@ -71,4 +72,76 @@ void Juego::cargarTesoros(){
 
 bool Juego::validarNombre(string nombre){
     return nombre.length() > 0 || nombre.length() < 20;
+}
+
+bool Juego::coordenadaValida(Coordenada pos){
+    bool resultado = true;
+    if(this->tablero->getTData(pos)->getTipo() == TESORO){
+        resultado = false;
+    }
+}
+
+bool Juego::validarLimitePosicion(Coordenada pos){
+    int size = this->tablero->getTamanioX();
+    return 
+    pos.getX() >= 0   && 
+    pos.getX() < size && 
+    pos.getY() >= 0   && 
+    pos.getY() < size && 
+    pos.getZ() >= 0   && 
+    pos.getZ() < size;
+}
+
+void Juego::handlerCarta(){
+    Decision decision = NINGUNA;
+    this->preguntarDecisionCarta(&decision);
+    if(decision == SI){
+        this->jugarCartaRecibida();
+    } else if (decision == NO){
+        this->guardarCarta();
+    } else if (decision == SALIR){
+        this->estadoPartida = -1;
+    }
+}
+
+void Juego::jugarCarta(int indice){
+    Mazo* mazo = this->jugadores->getLData(this->jugadores->getIter())->getMazo();
+    TipoCartas tipo = mazo->obtenerMazo()->getLData(indice)->getTipo();
+    mazo->usarCarta(tipo);
+}
+
+void Juego::jugarCartaDelMazo(){
+    int index = this->jugadores->getLData(this->jugadores->getIter())->getMazo()->obtenerMazo()->getSize();
+    int aux = 0;
+    cout << "Ingrese el numero de la carta que desea jugar: ";
+    cin >> aux;
+    while(aux > index || aux < 0){
+        cout << "Numero de carta invalido, ingrese otro: ";
+        cin >> aux;
+    }
+    this->jugarCarta(aux);
+}
+
+void Juego::handlerMazo(){
+    Decision decision = NINGUNA;
+    this->preguntarDecisionMazo(&decision);
+    if(decision == SI){
+        this->jugadores->getLData(this->jugadores->getIter())->getMazo()->imprimirMazo(this->jugadores->getLData(this->jugadores->getIter())->getNombre());
+        this->jugarCartaDelMazo();
+    } else if (decision == SALIR){
+        this->estadoPartida = -1;
+    }
+}
+
+void Juego::jugarTurno(){
+    Decision decision = NINGUNA;
+    for(int i = 0; i < this->jugadores->getSize(); i++){
+        if(this->estadoPartida == 0){
+            this->mostrarTablero();
+            this->recibirCarta();
+            this->handlerCarta();
+            this->handlerMazo();           
+
+        }
+    }
 }

@@ -3,6 +3,7 @@
 #include "Tablero.h"
 #include "Ficha.h"
 #include "Jugador.h"
+#include "Enums.h"
 
 class Juego{
 public:
@@ -21,20 +22,26 @@ private:
     ~Juego();
     //Iniciar juego
     void cargarTablero(); //
-    void cargarTesoros(); //
-    string preguntarNombre();
-    void cargarJugadores(int jugadores);
+    void cargarTesoros();//
+    string preguntarNombre();//
+    void cargarJugadores(int jugadores);//
 
-    bool validarNombre(std::string nombre);
-    bool coordenadaValida(Coordenada pos);
-    bool validarLimitePosicion(Coordenada pos);
+    bool validarNombre(std::string nombre); //
+    bool coordenadaValida(Coordenada pos); // De aca para abajo
+    bool validarLimitePosicion(Coordenada pos);//
     
     //Jugar
     void jugarTurno();
 
     //Carta
+    void handlerCarta();
+    void handlerMazo();
+    void preguntarDecisionMazo(Decision* decision);
+    void jugarCartaDelMazo();
+
+
     void recibirCarta();
-    void preguntarDecisionCarta();
+    void preguntarDecisionCarta(Decision* decision);
     void jugarCartaRecibida();
     void guardarCarta();
     void mostrarCartas();
@@ -52,8 +59,8 @@ private:
     bool validarNumeroFicha(int index);
 
     //Otro
-    void mostrarTablero(int jugador);
-    void mostrarAlertas(int jugador);
+    void mostrarTablero();
+    void mostrarAlertas();
     
 
 };

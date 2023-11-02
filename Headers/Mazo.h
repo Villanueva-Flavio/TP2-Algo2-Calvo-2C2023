@@ -17,6 +17,7 @@ class Mazo{
         int obtenerCantidadCartas(TipoCartas tipo);
         void imprimirMazo(std::string jugador);
         Lista<Carta*>* obtenerMazo();
+        void usarCarta(TipoCartas tipo);
 };
 
 #endif
