@@ -53,17 +53,20 @@ private:
     void handlerFichasDelTurno(TipoFichas tipo);
     void colocarFicha(TipoFichas tipo, Coordenada* pos);
     void preguntarPosicion(TipoFichas tipo, Coordenada* pos);
-    void handlerFicha(TipoFichas tipo);
+    void handlerFicha(TipoFichas tipoSrc);
     void checkEstadoPartida();
     bool validarNumeroFicha(int index);
     void preguntarCoordenada(Coordenada* pos);
-
+    bool distanciaContigua(Coordenada* c1, Coordenada* c2);
     void colocarFicha(TipoFichas tipo, Coordenada* pos);
     void colocarFicha(TipoFichas tipo, Coordenada* pos, int jugadorNuevo);
+    void imprimirFichas();
+    void seleccionarTesoro(int* fichaSeleccionada, Coordenada* auxSrc, Coordenada* auxDest);
 
     void handlerMina(TipoFichas tipoDest, Coordenada* aux, bool* loopCheck);
     void handlerEspia(TipoFichas tipoDest, Coordenada* aux, bool* loopCheck);
-
+    void handlerTesoro(bool* loopCheck);
+    
     //Otro
     void mostrarTablero();
     void mostrarAlertas();
