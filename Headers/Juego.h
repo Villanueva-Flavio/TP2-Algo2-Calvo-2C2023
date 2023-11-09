@@ -18,7 +18,6 @@ private:
     Tablero<Ficha*>* tablero;
     int estadoPartida;
 
-
     ~Juego();
     //Iniciar juego
     void cargarTablero(); //
@@ -34,13 +33,12 @@ private:
     void jugarTurno();
 
     //Carta
-    void handlerCarta();
+    void handlerCarta(int res);
     void handlerMazo();
     void preguntarDecisionMazo(Decision* decision);
     void jugarCartaDelMazo();
 
-
-    void recibirCarta();
+    void recibirCarta(int* res);
     void preguntarDecisionCarta(Decision* decision);
     void jugarCartaRecibida();
     void guardarCarta();
@@ -51,12 +49,20 @@ private:
     bool validarCarta(int index);
     
     //Fichas
+    string getFichaTipoGlobal(TipoFichas tipo);
     void handlerFichasDelTurno(TipoFichas tipo);
     void colocarFicha(TipoFichas tipo, Coordenada* pos);
     void preguntarPosicion(TipoFichas tipo, Coordenada* pos);
-    void handlerFicha(TipoFichas tipo, Coordenada pos);
-
+    void handlerFicha(TipoFichas tipo);
+    void checkEstadoPartida();
     bool validarNumeroFicha(int index);
+    void preguntarCoordenada(Coordenada* pos);
+
+    void colocarFicha(TipoFichas tipo, Coordenada* pos);
+    void colocarFicha(TipoFichas tipo, Coordenada* pos, int jugadorNuevo);
+
+    void handlerMina(TipoFichas tipoDest, Coordenada* aux, bool* loopCheck);
+    void handlerEspia(TipoFichas tipoDest, Coordenada* aux, bool* loopCheck);
 
     //Otro
     void mostrarTablero();

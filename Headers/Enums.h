@@ -20,9 +20,11 @@ enum TipoCartas{
 
 //Fichas
 enum TipoFichas{
+    MINA,
     TESORO,
     ESPIA,
     VACIO,
+    TESORO_DESENTERRADO,
     INACTIVO
 };
 
