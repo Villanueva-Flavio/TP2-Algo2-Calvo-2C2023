@@ -3,12 +3,14 @@
 
 #include <string>
 #include "Mazo.h"
+#include "Ficha.h"
+#include "Enums.h"
 
 class Jugador{
     private:
         std::string nombre;
         Mazo *mazo;
-        int tesorosRestantes;
+        Lista<Ficha*>* fichas;
     
     public:
         Jugador(std::string nombre);

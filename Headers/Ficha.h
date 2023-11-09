@@ -9,15 +9,19 @@ class Ficha{
         Coordenada posicion;
         TipoFichas tipo;
         int jugadorOwner;
+        int turnosInactiva;
 
     public:
-        Ficha(TipoFichas tipo, Coordenada posicion, int jugadorOwner);
+        Ficha(TipoFichas tipo, Coordenada posicion, int jugadorOwner, int turnosInactiva);
         TipoFichas getTipo();
         Coordenada getPosicion();
         void setPosicion(Coordenada posicion);
         void setTipo (TipoFichas tipo);
         int getJugadorOwner();
         void setJugadorOwner(int jugadorOwner);
+        void setTurnosInactiva(int turnosInactiva);
+        bool estaInactiva();
+        void restarTurnoInactiva();
 };
 
 #endif

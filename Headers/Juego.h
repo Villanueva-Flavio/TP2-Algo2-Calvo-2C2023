@@ -16,6 +16,7 @@ private:
     //Atributos
     Lista<Jugador*>* jugadores;
     Tablero<Ficha*>* tablero;
+    Lista<Ficha*>* inactivas;
     int estadoPartida;
     ~Juego();
 

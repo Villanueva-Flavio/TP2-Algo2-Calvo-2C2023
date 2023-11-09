@@ -8,6 +8,7 @@ Juego::Juego(int jugadores){
     int size = jugadores * 4;
     this->jugadores = new Lista<Jugador*>();
     this->tablero = new Tablero<Ficha*>(size, size, size);
+    this->inactivas = new Lista<Ficha*>();
     this->estadoPartida = 0;
     this->iniciarJuego(jugadores);
 }
@@ -40,6 +41,7 @@ int Juego::mostrarEstadoPartida(){
 Juego::~Juego(){
     delete this->jugadores;
     delete this->tablero;
+    delete this->inactivas;
 }
 
 //Iniciar juego

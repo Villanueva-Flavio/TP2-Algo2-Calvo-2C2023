@@ -3,11 +3,12 @@
 Jugador::Jugador(std::string nombre){
     this->nombre = nombre;
     this->mazo = new Mazo();
-    this->tesorosRestantes = 0;
+    this->fichas = new Lista<Ficha*>();
 }
 
 Jugador::~Jugador(){
     delete this->mazo;
+    delete this->fichas;
 }
 
 std::string Jugador::getNombre(){
@@ -15,7 +16,14 @@ std::string Jugador::getNombre(){
 }
 
 int Jugador::getTesorosRestantes(){
-    return this->tesorosRestantes;
+    int res = 0;
+    for(int i = 0; i < this->fichas->getSize(); i++){
+        Ficha* ficha = this->fichas->getLData(i);
+        if(ficha->getTipo() == TESORO || ficha->getTipo() == TESORO_DESENTERRADO){
+            res++;
+        }
+    }
+    return res;
 }
 
 Mazo* Jugador::getMazo(){
