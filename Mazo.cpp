@@ -1,4 +1,5 @@
 #include "./Headers/Mazo.h"
+using namespace std;
 
 Mazo::Mazo(){
     this->mazo = new Lista<Carta*>();
@@ -51,15 +52,6 @@ int Mazo::obtenerCantidadCartas(TipoCartas tipo){
     }
 }
 
-void Mazo::imprimirMazo(std::string jugador){
-    std::string nombreArchivo = "./Mazo_" + jugador + ".txt";
-    FILE* archivo = fopen(nombreArchivo.c_str(), "w"); 
-    for(int i = 0; i < this->mazo->getSize(); i++){
-        fprintf(archivo, "%d %d\n", this->mazo->getLData(i)->getTipo(), this->mazo->getLData(i)->getCantidad());
-    }
-    fclose(archivo);
-}
-
 Lista<Carta*>* Mazo::obtenerMazo(){
     return this->mazo;
 }
@@ -85,5 +77,22 @@ void Mazo::usarCarta(TipoCartas tipo){
         case BOMBA_DE_RACIMO:
             this->removerCarta(BOMBA_DE_RACIMO);
             break;
+    }
+}
+
+string Mazo::tipoDeCartaGlobal(TipoCartas tipo){
+    switch(tipo){
+        case BLINDAJE:
+            return "Blindaje";
+        case RADAR:
+            return "Radar";
+        case PARTIR_TESORO:
+            return "Partir tesoro";
+        case AGENTES_DURMIENTES:
+            return "Agentes durmientes";
+        case PALA_PARA_TUNEL:
+            return "Pala para tunel";
+        case BOMBA_DE_RACIMO:
+            return "Bomba de racimo";
     }
 }

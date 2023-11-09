@@ -117,6 +117,23 @@ bool Juego::validarDecisionCarta(string decision){
     return decision == "si" || decision == "no" || decision == "salir";
 }
 
+void Juego::preguntarDecisionCarta(Decision* decision){
+    string aux;
+    cout << "Desea jugar la carta? (si/no/salir): ";
+    cin >> aux;
+    while(!this->validarDecisionCarta(aux)){
+        cout << "Decision invalida, ingrese otra: ";
+        cin >> aux;
+    }
+    if(aux == "si"){
+        *decision = SI;
+    } else if (aux == "no"){
+        *decision = NO;
+    } else if (aux == "salir"){
+        *decision = SALIR;
+    }
+}
+
 void Juego::handlerCarta(int res){
     Decision decision = NINGUNA;
     this->preguntarDecisionCarta(&decision);
@@ -163,12 +180,23 @@ void Juego::preguntarDecisionMazo(Decision* decision){
     }
 }
 
+void Juego::imprimirMazo(){
+    Jugador* jugador = this->jugadores->getLData(this->jugadores->getIter());
+    string alerta;
+    for(int i = 0; i < 6; i++){
+        string cantidad = to_string(jugador->getMazo()->obtenerCantidadCartas((TipoCartas)i));
+        alerta = jugador->getMazo()->tipoDeCartaGlobal((TipoCartas)i) + ": " + cantidad + "\n";
+        this->mostrarAlertas(alerta, jugador);
+    }
+    
+}
+
 void Juego::handlerMazo(){
     Jugador* jugadorActual = this->jugadores->getLData(this->jugadores->getIter());
     Decision decision = NINGUNA;
     this->preguntarDecisionMazo(&decision);
     if(decision == SI){
-        jugadorActual->getMazo()->imprimirMazo(jugadorActual->getNombre());
+        this->imprimirMazo();
         this->jugarCartaDelMazo();
     } else if (decision == SALIR){
         this->estadoPartida = -1;
@@ -245,27 +273,27 @@ void Juego::handlerMina(TipoFichas tipoDest, Coordenada* aux, bool* loopCheck){
     int jugadorDest = this->tablero->getTData(*aux)->getJugadorOwner();
     switch(tipoDest){
         case MINA:
-            cout << "No se puede colocar una mina sobre otra mina" << endl;
+            this->mostrarAlertas("No se puede colocar una mina sobre otra mina\n", this->jugadores->getLData(jugadorActual));
             break;
 
         case TESORO:
             if(jugadorActual != jugadorDest){
-                cout << "Tesoro encontrado, desenterrando" << endl;
+                this->mostrarAlertas("Tesoro encontrado, desenterrando\n", this->jugadores->getLData(jugadorActual));
                 this->colocarFicha(TESORO_DESENTERRADO, aux);
                 *loopCheck = true;
                 break;
-            } 
-            cout << "No se puede atacar un tesoro propio" << endl;
+            }
+            this->mostrarAlertas("No se puede atacar un tesoro propio\n", this->jugadores->getLData(jugadorActual));
             break;
 
         case ESPIA:
             if(jugadorActual != jugadorDest){
-                cout << "Espia eliminado" << endl;
+                this->mostrarAlertas("Espia eliminado\n", this->jugadores->getLData(jugadorActual));
                 this->colocarFicha(VACIO, aux, 0);
                 *loopCheck = true;
                 break;
             }
-            cout << "No se puede atacar un espia propio" << endl;
+            this->mostrarAlertas("No se puede atacar un espia propio\n", this->jugadores->getLData(jugadorActual));
             break;
 
         case VACIO:
@@ -281,32 +309,32 @@ void Juego::handlerEspia(TipoFichas tipoDest, Coordenada* aux, bool* loopCheck){
     switch(tipoDest){
         case MINA:
             if(jugadorActual != jugadorDest){
-                cout << "Espía perdido en una mina" << endl;
+                this->mostrarAlertas("Espia perdido en una mina\n", this->jugadores->getLData(jugadorActual));
                 this->colocarFicha(VACIO, aux, 0);
                 *loopCheck = true;
                 break;
             }
-            cout << "El espía pisaría tu propia mina" << endl;
+            this->mostrarAlertas("El espia pisaria tu propia mina\n", this->jugadores->getLData(jugadorActual));
             break;
 
         case TESORO:
             if(this->tablero->getTData(*aux)->getJugadorOwner() != this->jugadores->getIter()){
-                cout << "Tesoro encontrado, desenterrando" << endl;
+                this->mostrarAlertas("Tesoro encontrado, desenterrando\n", this->jugadores->getLData(jugadorActual));
                 this->colocarFicha(TESORO_DESENTERRADO, aux);
                 *loopCheck = true;
                 break;
             }
-            cout << "No se puede atacar un tesoro propio" << endl;
+            this->mostrarAlertas("No se puede atacar un tesoro propio\n", this->jugadores->getLData(jugadorActual));
             break;
 
         case ESPIA:
             if(jugadorActual != jugadorDest){
-                cout << "Espia eliminado" << endl;
+                this->mostrarAlertas("Espia eliminado\n", this->jugadores->getLData(jugadorActual));
                 this->colocarFicha(VACIO, aux, 0);
                 *loopCheck = true;
                 break;
             }
-            cout << "No se puede atacar un espia propio" << endl;
+            this->mostrarAlertas("No se puede atacar un espia propio\n", this->jugadores->getLData(jugadorActual));
             break;
 
         case VACIO:
@@ -405,6 +433,8 @@ void Juego::handlerTesoro(bool* loopCheck){
             *loopCheck = true;
             break;
     }
+    delete auxSrc;
+    delete auxDest;
 }
 
 void Juego::handlerFicha(TipoFichas tipoSrc){
@@ -431,11 +461,25 @@ void Juego::handlerFicha(TipoFichas tipoSrc){
     delete aux;
 }
 
+void Juego::mostrarAlertas(string alerta, Jugador* jugadorActual){
+    string fileName = "Alertas_" + jugadorActual->getNombre() + ".txt";
+    FILE* archivo = fopen(fileName.c_str(), "a");
+    fprintf(archivo, "%s\n", alerta.c_str());
+    fclose(archivo);
+}
+
+void Juego::limpiarArchivo(Jugador* jugadorActual){
+    string fileName = "Alertas_" + jugadorActual->getNombre() + ".txt";
+    FILE* archivo = fopen(fileName.c_str(), "w");
+    fclose(archivo);
+}
+
 void Juego::jugarTurno(){
-    Decision decision = NINGUNA;
     int res;
     for(int i = 0; i < this->jugadores->getSize(); i++){
+        this->jugadores->goTo(i);
         if(this->estadoPartida == 0 && this->jugadores->getLData(i)->getTesorosRestantes() > 0){
+            this->limpiarArchivo(this->jugadores->getLData(i));
             this->mostrarTablero();
             this->recibirCarta(&res);
             this->handlerCarta(res);
