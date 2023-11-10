@@ -74,12 +74,12 @@ void Juego::cargarTesoros(){
         cout << "Ingrese la coordenada en el formato X Y Z del tesoro: ";
         cin >> *aux;
         cout << endl;
-        while(!this->validarLimitePosicion(*aux)){
+        while(!this->validarLimitePosicion(aux)){
             cout << "Coordenada invalida, ingrese otra: ";
             cin >> *aux;
             cout << endl;
         }
-        this->tablero->getTData(*aux)->setTipo(TESORO);
+        this->tablero->getTDataC(aux)->setTipo(TESORO);
     }
 }
 
@@ -87,22 +87,15 @@ bool Juego::validarNombre(string nombre){
     return nombre.length() > 0 || nombre.length() < 20;
 }
 
-bool Juego::coordenadaValida(Coordenada pos){
+bool Juego::coordenadaValida(Coordenada* pos){
     bool resultado = true;
-    if(this->tablero->getTData(pos)->getTipo() == TESORO){
+    if(this->tablero->getTDataC(pos)->getTipo() == TESORO){
         resultado = false;
     }
 }
 
-bool Juego::validarLimitePosicion(Coordenada pos){
-    int size = this->tablero->getTamanioX();
-    return 
-    pos.getX() >= 0   && 
-    pos.getX() < size && 
-    pos.getY() >= 0   && 
-    pos.getY() < size && 
-    pos.getZ() >= 0   && 
-    pos.getZ() < size;
+bool Juego::validarLimitePosicion(Coordenada* pos){
+    return this->tablero->inRange(pos->getX(), pos->getY(), pos->getZ());
 }
 
 //   JJJJJJJ     UU    UU     EEEEEEEEE     GGGGGGGG      OOOOOOOO
@@ -255,24 +248,24 @@ void Juego::checkEstadoPartida(){
 void Juego::preguntarCoordenada(Coordenada* pos){
     cout << "Ingrese la coordenada en el formato X Y Z: ";
     cin >> *pos;
-    while(!this->validarLimitePosicion(*pos)){
+    while(!this->validarLimitePosicion(pos)){
         cout << "Coordenada invalida, ingrese otra: ";
         cin >> *pos;
     }
 }
 
 void Juego::colocarFicha(TipoFichas tipo, Coordenada* pos){
-    this->tablero->getTData(*pos)->setTipo(tipo);
+    this->tablero->getTDataC(pos)->setTipo(tipo);
 }
 
 void Juego::colocarFicha(TipoFichas tipo, Coordenada* pos, int jugadorNuevo){
-    this->tablero->getTData(*pos)->setTipo(tipo);
-    this->tablero->getTData(*pos)->setJugadorOwner(jugadorNuevo);
+    this->tablero->getTDataC(pos)->setTipo(tipo);
+    this->tablero->getTDataC(pos)->setJugadorOwner(jugadorNuevo);
 }
 
 void Juego::handlerMina(TipoFichas tipoDest, Coordenada* aux, bool* loopCheck){
     int jugadorActual = this->jugadores->getIter();
-    int jugadorDest = this->tablero->getTData(*aux)->getJugadorOwner();
+    int jugadorDest = this->tablero->getTDataC(aux)->getJugadorOwner();
     switch(tipoDest){
         case MINA:
             this->mostrarAlertas("No se puede colocar una mina sobre otra mina\n", this->jugadores->getLData(jugadorActual));
@@ -307,7 +300,7 @@ void Juego::handlerMina(TipoFichas tipoDest, Coordenada* aux, bool* loopCheck){
 
 void Juego::handlerEspia(TipoFichas tipoDest, Coordenada* aux, bool* loopCheck){
     int jugadorActual = this->jugadores->getIter();
-    int jugadorDest = this->tablero->getTData(*aux)->getJugadorOwner();
+    int jugadorDest = this->tablero->getTDataC(aux)->getJugadorOwner();
     switch(tipoDest){
         case MINA:
             if(jugadorActual != jugadorDest){
@@ -320,7 +313,7 @@ void Juego::handlerEspia(TipoFichas tipoDest, Coordenada* aux, bool* loopCheck){
             break;
 
         case TESORO:
-            if(this->tablero->getTData(*aux)->getJugadorOwner() != this->jugadores->getIter()){
+            if(this->tablero->getTDataC(aux)->getJugadorOwner() != this->jugadores->getIter()){
                 this->mostrarAlertas("Tesoro encontrado, desenterrando\n", this->jugadores->getLData(jugadorActual));
                 this->colocarFicha(TESORO_DESENTERRADO, aux);
                 *loopCheck = true;
@@ -399,9 +392,9 @@ void Juego::handlerTesoro(bool* loopCheck){
     int fichaSeleccionada = 0;
     this->seleccionarTesoro(&fichaSeleccionada, auxSrc, auxDest);
     int jugadorActual = this->jugadores->getIter();
-    int jugadorDest = this->tablero->getTData(*auxDest)->getJugadorOwner();
-    TipoFichas tipoSrc = this->tablero->getTData(*auxSrc)->getTipo();
-    TipoFichas tipoDest = this->tablero->getTData(*auxDest)->getTipo();
+    int jugadorDest = this->tablero->getTDataC(auxDest)->getJugadorOwner();
+    TipoFichas tipoSrc = this->tablero->getTDataC(auxSrc)->getTipo();
+    TipoFichas tipoDest = this->tablero->getTDataC(auxDest)->getTipo();
     switch(tipoDest){
         case MINA:
             if(jugadorActual != jugadorDest){
@@ -439,13 +432,17 @@ void Juego::handlerTesoro(bool* loopCheck){
     delete auxDest;
 }
 
-void Juego::handlerFicha(TipoFichas tipoSrc){
-    Coordenada* aux = new Coordenada(0, 0, 0);
+void Juego::handlerCoordenadaFicha(Coordenada* aux, TipoFichas tipoSrc){
     cout << "Ficha: " << this->getFichaTipoGlobal(tipoSrc) << endl;
     if(tipoSrc != TESORO){
         this->preguntarCoordenada(aux);
     }
-    TipoFichas tipoDest = this->tablero->getTData(*aux)->getTipo();
+}
+
+void Juego::handlerFicha(TipoFichas tipoSrc){
+    Coordenada* aux = new Coordenada(0, 0, 0);
+    this->handlerCoordenadaFicha(aux, tipoSrc);
+    TipoFichas tipoDest = this->tablero->getTDataC(aux)->getTipo();
     bool loopCheck = false;
     while(!loopCheck){
         switch(tipoSrc){

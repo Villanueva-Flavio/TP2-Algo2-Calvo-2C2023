@@ -37,3 +37,11 @@ bool Ficha::estaInactiva(){
 void Ficha::restarTurnoInactiva(){
     this->turnosInactiva--;
 }
+
+TipoTerreno Ficha::getTipoTerreno(){
+    return this->tipoTerreno;
+}
+
+void Ficha::setTipoTerreno(TipoTerreno tipo){
+    this->tipoTerreno = tipo;
+}

@@ -14,7 +14,7 @@ class Coordenada{
     int getX();
     int getY();
     int getZ();
-    Coordenada getCoordenada();
+    Coordenada* getCoordenada();
 
     void setX(int x);
     void setY(int y);

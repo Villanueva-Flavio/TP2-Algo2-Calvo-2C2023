@@ -6,23 +6,22 @@
 #include "Enums.h"
 
 //RENDER
-const RGBApixel BLANCO = {255, 255, 255, 0};
-const RGBApixel BORDE = {0, 0, 0, 0};
+const RGBApixel C_BLANCO = {255, 255, 255, 0};
+const RGBApixel C_BORDE = {0, 0, 0, 0};
 //TERRAIN
-const RGBApixel ARENA = {0, 215, 215, 0};
-const RGBApixel ARENA_OSCURA = {0, 150, 150, 0};
-const RGBApixel AGUA = {255, 0, 0, 0};
-const RGBApixel AGUA_OSCURA = {150, 0, 0, 0};
-const RGBApixel PASTO = {89, 130, 65, 0};
-const RGBApixel PASTO_OSCURO = {50, 70, 35, 0};
-const RGBApixel TIERRA = {14, 48, 94, 0};
-const RGBApixel TIERRA_OSCURA = {9, 32, 64, 0};
+const RGBApixel C_ARENA = {0, 215, 215, 0};
+const RGBApixel C_ARENA_OSCURA = {0, 150, 150, 0};
+const RGBApixel C_AGUA = {255, 0, 0, 0};
+const RGBApixel C_AGUA_OSCURA = {150, 0, 0, 0};
+const RGBApixel C_PASTO = {89, 130, 65, 0};
+const RGBApixel C_PASTO_OSCURO = {50, 70, 35, 0};
+const RGBApixel C_TIERRA = {14, 48, 94, 0};
+const RGBApixel C_TIERRA_OSCURA = {9, 32, 64, 0};
 //PROPS
-const RGBApixel INACTIVO = {12, 92, 232, 0};
-const RGBApixel MINA = {50, 50, 50, 50};
-const RGBApixel ESPIA = {201, 41, 207, 0};
-const RGBApixel TESORO = {207, 174, 41, 0};
-
+const RGBApixel C_INACTIVO = {12, 92, 232, 0};
+const RGBApixel C_MINA = {50, 50, 50, 50};
+const RGBApixel C_ESPIA = {201, 41, 207, 0};
+const RGBApixel C_TESORO = {207, 174, 41, 0};
 
 double gradosARadianes(double grados){
     return grados * 3.14159 / 180.0;
@@ -57,80 +56,78 @@ bool colorEnRango(RGBApixel color){
     return color.Red >= 0 && color.Red <= 255 && color.Green >= 0 && color.Green <= 255 && color.Blue >= 0 && color.Blue <= 255;
 }
 
-bool pixelEnRango(int px, int py, Coordenada imgSize){
-    return px >= 0 && px < imgSize.getX() && py >= 0 && py < imgSize.getY();
+bool pixelEnRango(int px, int py, Coordenada* imgSize){
+    return px >= 0 && px < imgSize->getX() && py >= 0 && py < imgSize->getY();
 }
 
 
 int pixelSizeGet(RGBApixel color){
-    int resultado = (coloresSonIguales(color, AGUA))? 2:8;
-    resultado = (coloresSonIguales(color, INACTIVO))? 7:resultado;
-    resultado = (coloresSonIguales(color, AGUA_OSCURA) || coloresSonIguales(color, BORDE) || coloresSonIguales(color, MINA))? 3:resultado;
-    resultado = (coloresSonIguales(color, ARENA) || coloresSonIguales(color, ARENA_OSCURA) || coloresSonIguales(color, TIERRA) || coloresSonIguales(color, TIERRA_OSCURA) || coloresSonIguales(color, PASTO))? 6:resultado;
+    int resultado = (coloresSonIguales(color, C_AGUA))? 2:8;
+    resultado = (coloresSonIguales(color, C_INACTIVO))? 7:resultado;
+    resultado = (coloresSonIguales(color, C_AGUA_OSCURA) || coloresSonIguales(color, C_BORDE) || coloresSonIguales(color, C_MINA))? 3:resultado;
+    resultado = (coloresSonIguales(color, C_ARENA) || coloresSonIguales(color, C_ARENA_OSCURA) || coloresSonIguales(color, C_TIERRA) || coloresSonIguales(color, C_TIERRA_OSCURA) || coloresSonIguales(color, C_PASTO))? 6:resultado;
     return resultado;
 }
 
-bool pixelSizeEnRango(Coordenada pixelPos, Coordenada imgSize, int pixelSize){
+bool pixelSizeEnRango(Coordenada* pixelPos, Coordenada* imgSize, int pixelSize){
     bool resultado = false;
-    if(pixelEnRango(pixelPos.getX() + pixelSize, pixelPos.getY() + pixelSize, imgSize) && 
-        pixelEnRango(pixelPos.getX() - pixelSize, pixelPos.getY() - pixelSize, imgSize) && 
-        pixelEnRango(pixelPos.getX() + pixelSize, pixelPos.getY() + pixelSize, imgSize) && 
-        pixelEnRango(pixelPos.getX() - pixelSize, pixelPos.getY() - pixelSize, imgSize)){
+    if (pixelEnRango(pixelPos->getX() + pixelSize, pixelPos->getY() + pixelSize, imgSize) && 
+        pixelEnRango(pixelPos->getX() - pixelSize, pixelPos->getY() - pixelSize, imgSize) && 
+        pixelEnRango(pixelPos->getX() + pixelSize, pixelPos->getY() + pixelSize, imgSize) && 
+        pixelEnRango(pixelPos->getX() - pixelSize, pixelPos->getY() - pixelSize, imgSize)){
         resultado = true;
     }
     return resultado;
 }
 
-void pintarEntidad(BMP* image, Coordenada pixelPos, RGBApixel color, Coordenada imgSize){
+void pintarEntidad(BMP* image, Coordenada* pixelPos, RGBApixel color, Coordenada* imgSize){
     int pixelSize = pixelSizeGet(color);
     for(int i = 0; i < pixelSize; i++){
         for(int j = 0; j < pixelSize; j++){
-            if(pixelSizeEnRango(pixelPos, imgSize, pixelSize) && !coloresSonIguales(color, BLANCO)){
-                    image->SetPixel(pixelPos.getX() + i, pixelPos.getY() + j, color);
-                    image->SetPixel(pixelPos.getX() - i, pixelPos.getY() + j, color);
-                    image->SetPixel(pixelPos.getX() + i, pixelPos.getY() - j, color);
-                    image->SetPixel(pixelPos.getX() - i, pixelPos.getY() - j, color);
+            if(pixelSizeEnRango(pixelPos, imgSize, pixelSize) && !coloresSonIguales(color, C_BLANCO)){
+                    image->SetPixel(pixelPos->getX() + i, pixelPos->getY() + j, color);
+                    image->SetPixel(pixelPos->getX() - i, pixelPos->getY() + j, color);
+                    image->SetPixel(pixelPos->getX() + i, pixelPos->getY() - j, color);
+                    image->SetPixel(pixelPos->getX() - i, pixelPos->getY() - j, color);
             }
         }
     }
 }
 
-Coordenada getPixelOffset(int lado, int size){
-    Coordenada pixelOffset = Coordenada(0, 0, 0);
-    pixelOffset.setX((lado == IZQUIERDA)? size*5 : (lado == DERECHA)? size*43 : size*55);
-    pixelOffset.setY((lado == IZQUIERDA)? size*37 : (lado == DERECHA)? size*31 : size*38);
-    return pixelOffset;
+void getPixelOffset(int lado, int size, Coordenada* pixelOffset){;
+    pixelOffset->setX((lado == IZQUIERDA)? size*5 : (lado == DERECHA)? size*43 : size*55);
+    pixelOffset->setY((lado == IZQUIERDA)? size*37 : (lado == DERECHA)? size*31 : size*38);
 }
 
 RGBApixel codigoColorSegunCelda(TipoTerreno capaCelda){
     RGBApixel codigoColor;
     switch (capaCelda){
         case TERRENO_ARENA:
-            codigoColor = ARENA;
+            codigoColor = C_ARENA;
             break;
         case TERRENO_AGUA:
-            codigoColor = AGUA;
+            codigoColor = C_AGUA;
             break;
         case TERRENO_PASTO:
-            codigoColor = PASTO;
+            codigoColor = C_PASTO;
             break;
         case TERRENO_TIERRA:
-            codigoColor = TIERRA;
+            codigoColor = C_TIERRA;
             break;
         case TERRENO_BORDE:
-            codigoColor = BORDE;
+            codigoColor = C_BORDE;
             break;
         case TERRENO_INACTIVO:
-            codigoColor = INACTIVO;
+            codigoColor = C_INACTIVO;
             break;
         case FICHA_ESPIA:
-            codigoColor = ESPIA;
+            codigoColor = C_ESPIA;
             break;
         case FICHA_MINA:
-            codigoColor = TESORO;
+            codigoColor = C_TESORO;
             break;
         case FICHA_TESORO:
-            codigoColor = TESORO;
+            codigoColor = C_TESORO;
             break;
     }
     return codigoColor;
@@ -144,65 +141,56 @@ bool capaExiste(TipoTerreno capaCelda){
     return false;
 }
 
-RGBApixel getColor(Celda celda, bool esFicha){
-    RGBApixel colorAux = (esFicha)? ESPIA : BLANCO;
-    if(coloresSonIguales(colorAux, BLANCO)){
-        colorAux = (capaExiste(celda.getTipo()))? codigoColorSegunCelda(celda.getTipo()) : colorAux;
+RGBApixel getColor(Ficha* ficha, bool esFicha){
+    RGBApixel colorAux = (esFicha)? C_ESPIA : C_BLANCO;
+    if(coloresSonIguales(colorAux, C_BLANCO)){
+        colorAux = (capaExiste(ficha->getTipoTerreno()))? codigoColorSegunCelda(ficha->getTipoTerreno()) : colorAux;
     }
     return colorAux;
 }
 
-void getAux(int lado, Coordenada* aux){
+void getDif(int lado, Coordenada* aux){
     int valor = (lado == ATRAS) ? -1 : 1;
     aux->setX(valor);
     aux->setY(valor);
     aux->setZ(valor);
 }
 
-void getPixel(CoordenadaDouble* pixel, Coordenada matrixPos){
-
-
-
-    pixel->setX((double)matrixPos.getX());
-    pixel->setY((double)matrixPos.getY());
-    pixel->setZ((double)matrixPos.getZ());
+void getPixel(CoordenadaDouble* pixel, Coordenada* matrixPos){
+    pixel->setX((double)matrixPos->getX());
+    pixel->setY((double)matrixPos->getY());
+    pixel->setZ((double)matrixPos->getZ());
 }
 
 int matrixPosStarter(int lado, int size){
     return (lado == IZQUIERDA)? 0 : (lado == DERECHA)? 0 : size-1;
 }
 
-void imprimirBMP(Coordenada imgSize, BMP* image, Tablero<Celda*>* tablero, int jugador){
+void imprimirBMP(Coordenada* imgSize, BMP* image, Tablero<Ficha*>* tablero, int jugador){
     RGBApixel color;
-    int i = 0;
-    Coordenada pixelPos, matrixPos, aux, pixelOffset;
-    CoordenadaDouble pixel;
-    bool esFicha = false;
+    Coordenada* pixelPos = new Coordenada(0, 0, 0), *matrixPos = new Coordenada(0, 0, 0), *matrixPosDif = new Coordenada(0, 0, 0), *pixelOffset = new Coordenada(0, 0, 0);
+    CoordenadaDouble* pixel = new CoordenadaDouble(0, 0, 0);
     for(int lado = 0; lado < 3; lado ++){
-        getAux(lado, &aux);
-        pixelOffset = getPixelOffset(lado, tablero->getTamanioX());
-
-        matrixPos.setX(matrixPosStarter(lado, tablero->getTamanioX()));
-        matrixPos.setY(matrixPosStarter(lado, tablero->getTamanioY()));
-        matrixPos.setZ(matrixPosStarter(lado, tablero->getTamanioZ()));
-
-        while (matrixPos.getX() < tablero->getTamanioX() && matrixPos.getX() >= 0) {
-            while (matrixPos.getY() < tablero->getTamanioY() && matrixPos.getY() >= 0) {
-                while (matrixPos.getZ() < tablero->getTamanioZ() && matrixPos.getZ() >= 0) {
-                    getPixel(&pixel, matrixPos);
-                    aplicarProyeccionIsometrica(&pixel, lado);
-                    pixelPos.setX(static_cast<int>((pixel.getX()) * 20 + pixelOffset.getX())); 
-                    pixelPos.setY(static_cast<int>((pixel.getY()) * 20 + pixelOffset.getY()));
-                    esFicha = (tablero->getTData(matrixPos.getX(), matrixPos.getY(), matrixPos.getZ())->getFicha()->getJugadorOwner() == jugador && tablero->getTData(matrixPos.getX(), matrixPos.getY(), matrixPos.getZ())->getFicha()->getTipo() != MINA_FICHA);
-                    color = getColor(*tablero->getTData(matrixPos.getX(), matrixPos.getY(), matrixPos.getZ()), esFicha);
+        getDif(lado, matrixPosDif);
+        getPixelOffset(lado, tablero->getTamanioX(), pixelOffset);
+        matrixPos->setCoordenada(matrixPosStarter(lado, tablero->getTamanioX()), matrixPosStarter(lado, tablero->getTamanioY()), matrixPosStarter(lado, tablero->getTamanioZ()));
+        while (matrixPos->getX() < tablero->getTamanioX() && matrixPos->getX() >= 0) {
+            while (matrixPos->getY() < tablero->getTamanioY() && matrixPos->getY() >= 0) {
+                while (matrixPos->getZ() < tablero->getTamanioZ() && matrixPos->getZ() >= 0) {
+                    getPixel(pixel, matrixPos);
+                    aplicarProyeccionIsometrica(pixel, lado);
+                    pixelPos->setX(static_cast<int>((pixel->getX()) * 20 + pixelOffset->getX())); 
+                    pixelPos->setY(static_cast<int>((pixel->getY()) * 20 + pixelOffset->getY()));
+                    color = getColor(tablero->getTDataC(matrixPos), (tablero->getTDataC(matrixPos)->getJugadorOwner() == jugador && tablero->getTDataC(matrixPos)->getTipo() != MINA));
                     pintarEntidad(image, pixelPos, color, imgSize);
-                    matrixPos.setZ(matrixPos.getZ() + aux.getZ());
+                    matrixPos->setZ(matrixPos->getZ() + matrixPosDif->getZ());
                 }
-                matrixPos.setZ(matrixPosStarter(lado, tablero->getTamanioZ()));
-                matrixPos.setY(matrixPos.getY() + aux.getY());
+                matrixPos->setZ(matrixPosStarter(lado, tablero->getTamanioZ()));
+                matrixPos->setY(matrixPos->getY() + matrixPosDif->getY());
             }
-            matrixPos.setY(matrixPosStarter(lado, tablero->getTamanioY()));
-            matrixPos.setX(matrixPos.getX() + aux.getX());
+            matrixPos->setY(matrixPosStarter(lado, tablero->getTamanioY()));
+            matrixPos->setX(matrixPos->getX() + matrixPosDif->getX());
         }
     }
+    delete pixelPos, matrixPos, matrixPosDif, pixelOffset, pixel;
 }

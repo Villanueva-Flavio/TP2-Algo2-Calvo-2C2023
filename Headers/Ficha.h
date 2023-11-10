@@ -23,6 +23,8 @@ class Ficha{
         void setTurnosInactiva(int turnosInactiva);
         bool estaInactiva();
         void restarTurnoInactiva();
+        TipoTerreno getTipoTerreno();
+        void setTipoTerreno(TipoTerreno tipo);
 };
 
 #endif

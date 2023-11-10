@@ -26,8 +26,8 @@ private:
     string preguntarNombre();
     void cargarJugadores(int jugadores);
     bool validarNombre(std::string nombre);
-    bool coordenadaValida(Coordenada pos);
-    bool validarLimitePosicion(Coordenada pos);
+    bool coordenadaValida(Coordenada* pos);
+    bool validarLimitePosicion(Coordenada* pos);
     
     //Jugar
     void jugarTurno();
@@ -47,6 +47,7 @@ private:
     //Fichas
     std::string getFichaTipoGlobal(TipoFichas tipo);
     void colocarFicha(TipoFichas tipo, Coordenada* pos);
+    void handlerCoordenadaFicha(Coordenada* aux, TipoFichas tipoSrc);
     void handlerFicha(TipoFichas tipoSrc);
     bool validarNumeroFicha(int index);
     void preguntarCoordenada(Coordenada* pos);

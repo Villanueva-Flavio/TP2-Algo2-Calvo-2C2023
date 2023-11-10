@@ -1,20 +1,20 @@
 #ifndef __RENDERIZADOR_H__
 #define __RENDERIZADOR_H__
 
-#include <map>
 #include "./Headers/Ficha.h"
 #include "EasyBMP/EasyBMP.h"
-#include "./Headers/Coordenada.h"
-#include "./Headers/CoordenadaDouble.h"
+#include "./Coordenada.h"
+#include "./CoordenadaDouble.h"
+#include "./Ficha.h"
 
 #define IZQUIERDA 0
 #define DERECHA 1
 #define ATRAS 2
 
 
-RGBApixel codigoColorSegunCelda(Capa capaCelda);
+RGBApixel codigoColorSegunCelda(TipoTerreno capaCelda);
 
-bool capaExiste(Capa capaCelda);
+bool capaExiste(TipoTerreno capaCelda);
 
 double gradosARadianes(double grados);
 
@@ -40,8 +40,8 @@ void pintarEntidad(BMP* image, Coordenada pixelPos, RGBApixel color, Coordenada 
 
 Coordenada getPixelOffset(int lado, int size);
 
-RGBApixel getColor(Celda celda);
+RGBApixel getColor(Ficha* celda);
 
-void imprimirBMP(Coordenada imgSize, BMP* image, Tablero<Celda*>* tablero, int jugador);
+void imprimirBMP(Coordenada imgSize, BMP* image, Tablero<Ficha*>* tablero, int jugador);
 
 #endif
