@@ -102,28 +102,25 @@ Coordenada getPixelOffset(int lado, int size){
     return pixelOffset;
 }
 
-RGBApixel codigoColorSegunCelda(Capa capaCelda){
+RGBApixel codigoColorSegunCelda(TipoTerreno capaCelda){
     RGBApixel codigoColor;
     switch (capaCelda){
-        case CAPA_ARENA:
+        case TERRENO_ARENA:
             codigoColor = ARENA;
             break;
-        case CAPA_AGUA:
+        case TERRENO_AGUA:
             codigoColor = AGUA;
             break;
-        case CAPA_PASTO:
+        case TERRENO_PASTO:
             codigoColor = PASTO;
             break;
-        case CAPA_TIERRA:
+        case TERRENO_TIERRA:
             codigoColor = TIERRA;
             break;
-        case CAPA_BORDE:
+        case TERRENO_BORDE:
             codigoColor = BORDE;
             break;
-        case CAPA_MINA:
-            codigoColor = MINA;
-            break;
-        case CAPA_INACTIVO:
+        case TERRENO_INACTIVO:
             codigoColor = INACTIVO;
             break;
         case FICHA_ESPIA:
@@ -139,9 +136,9 @@ RGBApixel codigoColorSegunCelda(Capa capaCelda){
     return codigoColor;
 }
 
-bool capaExiste(Capa capaCelda){
-    if(capaCelda == CAPA_ARENA || capaCelda == CAPA_AGUA || capaCelda == CAPA_PASTO || capaCelda == CAPA_TIERRA ||capaCelda == FICHA_MINA 
-       || capaCelda == CAPA_BORDE || capaCelda == CAPA_MINA || capaCelda == CAPA_FUEGO || capaCelda == FICHA_ESPIA){
+bool capaExiste(TipoTerreno capaCelda){
+    if(capaCelda == TERRENO_ARENA || capaCelda == TERRENO_AGUA || capaCelda == TERRENO_PASTO || capaCelda == TERRENO_TIERRA ||capaCelda == FICHA_MINA 
+       || capaCelda == TERRENO_BORDE || capaCelda == TERRENO_FUEGO || capaCelda == FICHA_ESPIA){
         return true;
     }
     return false;

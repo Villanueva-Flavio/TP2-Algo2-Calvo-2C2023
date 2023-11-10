@@ -1,6 +1,7 @@
 #include "./Headers/Juego.h"
 #include <string>
 #include "./Headers/Enums.h"
+#include "./Headers/Renderizador.h"
 
 using namespace std;
 
@@ -104,16 +105,11 @@ bool Juego::validarLimitePosicion(Coordenada pos){
     pos.getZ() < size;
 }
 
-
-
-
-
-//   JJJJJJJ     UU    UU     EEEEEEEEE    GGGGGGGGG      OOOOOOOO
+//   JJJJJJJ     UU    UU     EEEEEEEEE     GGGGGGGG      OOOOOOOO
 //        JJ     UU    UU     EE           GG            OO      OO
-//        JJ     UU    UU     EEEE         GG   GGGG     OO      OO
+//        JJ     UU    UU     EEEE         GG   GGG      OO      OO
 //   JJ   JJ     UU    UU     EE           GG     GG     OO      OO
-//   JJJJJ        UUUUUU      EEEEEEEEE     GGGGGGGG      OOOOOOOO
-
+//   JJJJJ        UUUUUU      EEEEEEEEE     GGGGGGG       OOOOOOOO
 
 bool Juego::validarDecisionCarta(string decision){
     return decision == "si" || decision == "no" || decision == "salir";
@@ -225,6 +221,10 @@ string Juego::getFichaTipoGlobal(TipoFichas tipo){
             return "tesoro";
         case ESPIA:
             return "espia";
+        case TESORO_DESENTERRADO:
+            return "tesoro desenterrado";
+        case INACTIVO:
+            return "inactivo";
         default:
             return "vacio";
     }
@@ -476,11 +476,24 @@ void Juego::limpiarArchivo(Jugador* jugadorActual){
     fclose(archivo);
 }
 
+void Juego::sacarFoto(){
+    Jugador* jugadorActual = this->jugadores->getLData(this->jugadores->getIter());
+    Coordenada* imgSize = new Coordenada(this->tablero->getTamanioX() * 100, this->tablero->getTamanioY() * 70, 0);
+    BMP* imagen = new BMP();
+    imagen->SetSize(imgSize->getX(), imgSize->getY());
+    imprimirBMP(*imgSize, imagen, this->tablero, this->jugadores->getIter());
+    string fileName = "Tablero_" + jugadorActual->getNombre() + ".bmp";
+    imagen->WriteToFile(fileName.c_str());
+    delete imagen;
+    delete imgSize;
+}
+
 void Juego::jugarTurno(){
     int res;
     for(int i = 0; i < this->jugadores->getSize(); i++){
         this->jugadores->goTo(i);
         if(this->estadoPartida == 0 && this->jugadores->getLData(i)->getTesorosRestantes() > 0){
+            this->sacarFoto();
             this->limpiarArchivo(this->jugadores->getLData(i));
             this->mostrarTablero();
             this->recibirCarta(&res);

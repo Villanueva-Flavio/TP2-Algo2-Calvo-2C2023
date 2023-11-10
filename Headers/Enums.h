@@ -29,15 +29,14 @@ enum TipoFichas{
 };
 
 //Celdas
-enum Capa{
-    CAPA_ARENA,
-    CAPA_AGUA,
-    CAPA_PASTO,
-    CAPA_TIERRA,
-    CAPA_BORDE,
-    CAPA_MINA,
-    CAPA_FUEGO,
-    CAPA_INACTIVO,
+enum TipoTerreno{
+    TERRENO_ARENA,
+    TERRENO_AGUA,
+    TERRENO_PASTO,
+    TERRENO_TIERRA,
+    TERRENO_BORDE,
+    TERRENO_FUEGO,
+    TERRENO_INACTIVO,
     FICHA_ESPIA,
     FICHA_MINA,
     FICHA_TESORO

@@ -10,6 +10,7 @@ class Ficha{
         TipoFichas tipo;
         int jugadorOwner;
         int turnosInactiva;
+        TipoTerreno tipoTerreno; // IMPLEMENTAR
 
     public:
         Ficha(TipoFichas tipo, Coordenada posicion, int jugadorOwner, int turnosInactiva);
