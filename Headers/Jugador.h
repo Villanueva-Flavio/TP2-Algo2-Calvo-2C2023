@@ -1,3 +1,5 @@
+#ifndef __JUGADOR_H__
+#define __JUGADOR_H__
 
 #include <string>
 #include "Mazo.h"
