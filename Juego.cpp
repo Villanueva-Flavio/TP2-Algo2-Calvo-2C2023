@@ -246,7 +246,7 @@ void Juego::palaTunel(int x, int y, int z, Jugador* jugador){
     //como se mueve la ficha, supongo que no hace falta eliminarla del tablero.
     colocarFicha(fichaPos->getTipo(), pos);
     //actualiza la ficha a vacio
-    this->tablero->setTData(x,y,z,vacio);
+    //this->tablero->setTData(x,y,z,vacio);
 
     //hara falta revisar las interacciones si un tesoro va donde un enemigo, espia en espia, mina en tesoro, etc...
 }

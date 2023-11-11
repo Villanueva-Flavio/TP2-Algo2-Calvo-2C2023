@@ -3,6 +3,7 @@
 
 #include "Enums.h"
 
+
 class Carta {
     private:
         TipoCartas tipo;

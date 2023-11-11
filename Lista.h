@@ -127,7 +127,7 @@ template <class T> void Lista<T>::add(T data) {
 template <class T> void Lista<T>::remove(int x) {
 	irANodo(x);
 	if(this->getSize() > 1){
-		this->anterior->setSig(this->siguiente);
+		this->getIter()->setSig(this->siguiente);
 		this->siguiente->setAnt(this->anterior);
 		if(this->iterador == this->primero){
 			this->primero = this->siguiente;
