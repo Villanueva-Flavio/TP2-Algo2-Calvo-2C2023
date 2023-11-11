@@ -1,6 +1,6 @@
 #include <string>
 #include "Coordenada.h"
-#include "TDA/Tablero.h"
+#include "../TDA/Tablero.h"
 #include "Ficha.h"
 #include "Jugador.h"
 #include "Enums.h"

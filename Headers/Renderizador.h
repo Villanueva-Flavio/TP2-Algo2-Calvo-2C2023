@@ -1,8 +1,8 @@
 #ifndef __RENDERIZADOR_H__
 #define __RENDERIZADOR_H__
 
-#include "./Headers/Ficha.h"
-#include "EasyBMP/EasyBMP.h"
+#include "../TDA/Tablero.h"
+#include "../EasyBMP/EasyBMP.h"
 #include "./Coordenada.h"
 #include "./CoordenadaDouble.h"
 #include "./Ficha.h"

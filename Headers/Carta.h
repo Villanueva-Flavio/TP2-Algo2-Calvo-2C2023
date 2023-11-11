@@ -3,8 +3,7 @@
 #define __CARTA_H__
 #include "Enums.h"
 #include "Jugador.h"
-#include "Lista.h"
-#include "Tablero.h"
+#include "../TDA/Tablero.h"
 
 class Carta {
     private:
