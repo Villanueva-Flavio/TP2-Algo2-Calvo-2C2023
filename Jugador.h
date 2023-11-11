@@ -4,7 +4,6 @@
 #include <string>
 #include "Mazo.h"
 #include "Ficha.h"
-#include "Enums.h"
 
 class Jugador{
     private:

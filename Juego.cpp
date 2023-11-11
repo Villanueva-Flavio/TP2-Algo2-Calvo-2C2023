@@ -4,7 +4,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <sstream>
-#include "Enums.h"
 #include "Renderizador.h"
 
 using namespace std;
@@ -247,7 +246,7 @@ void Juego::palaTunel(int x, int y, int z, Jugador* jugador){
     //como se mueve la ficha, supongo que no hace falta eliminarla del tablero.
     colocarFicha(fichaPos->getTipo(), pos);
     //actualiza la ficha a vacio
-    this->tablero->setTData(x,y,z,vacio);
+    //this->tablero->setTData(x,y,z,vacio);
 
     //hara falta revisar las interacciones si un tesoro va donde un enemigo, espia en espia, mina en tesoro, etc...
 }
@@ -316,7 +315,7 @@ void Juego::imprimirMazo(){
     Jugador* jugador = this->jugadores->getLData(this->jugadores->getIter());
     string alerta;
     for(int i = 0; i < 6; i++){
-        string cantidad = to_string(jugador->getMazo()->obtenerCantidadCartas((TipoCartas)i));
+        string cantidad = IntToString(jugador->getMazo()->obtenerCantidadCartas((TipoCartas)i));
         alerta = jugador->getMazo()->tipoDeCartaGlobal((TipoCartas)i) + ": " + cantidad + "\n";
         this->mostrarAlertas(alerta, jugador);
     }
@@ -324,7 +323,6 @@ void Juego::imprimirMazo(){
 }
 
 void Juego::handlerMazo(){
-    Jugador* jugadorActual = this->jugadores->getLData(this->jugadores->getIter());
     Decision decision = NINGUNA;
     this->preguntarDecisionMazo(&decision);
     if(decision == SI){
@@ -413,6 +411,7 @@ void Juego::handlerMina(TipoFichas tipoDest, Coordenada* aux, bool* loopCheck){
             break;
 
         case TESORO:
+        case TESORO_DESENTERRADO:
             if(jugadorActual != jugadorDest){
                 this->mostrarAlertas("Tesoro encontrado, desenterrando\n", this->jugadores->getLData(jugadorActual));
                 this->colocarFicha(TESORO_DESENTERRADO, aux);
@@ -454,6 +453,7 @@ void Juego::handlerEspia(TipoFichas tipoDest, Coordenada* aux, bool* loopCheck){
             break;
 
         case TESORO:
+        case TESORO_DESENTERRADO:
             if(this->tablero->getTDataC(aux)->getJugadorOwner() != this->jugadores->getIter()){
                 this->mostrarAlertas("Tesoro encontrado, desenterrando\n", this->jugadores->getLData(jugadorActual));
                 this->colocarFicha(TESORO_DESENTERRADO, aux);
@@ -594,6 +594,7 @@ void Juego::handlerFicha(TipoFichas tipoSrc){
                 handlerEspia(tipoDest, aux, &loopCheck);
                 break;
             case TESORO:
+            case TESORO_DESENTERRADO:
                 handlerTesoro(&loopCheck);
                 break;
         }

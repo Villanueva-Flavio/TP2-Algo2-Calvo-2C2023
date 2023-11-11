@@ -1,7 +1,8 @@
+
 #ifndef __CARTA_H__
 #define __CARTA_H__
-
 #include "Enums.h"
+#include "Jugador.h"
 
 
 class Carta {
@@ -16,6 +17,8 @@ class Carta {
         void removerCarta();
         TipoCartas getTipo();
         int getCantidad();
+        void efectoBlindaje(Jugador* jugador);
+        void duplicarTesoro(int x, int y, int z);
 };
 
 #endif
