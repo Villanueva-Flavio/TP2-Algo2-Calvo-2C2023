@@ -19,8 +19,8 @@ int Coordenada::getZ(){
     return this->z;
 }
 
-Coordenada Coordenada::getCoordenada(){
-    return *this;
+Coordenada* Coordenada::getCoordenada(){
+    return this;
 }
 
 void Coordenada::setX(int x){

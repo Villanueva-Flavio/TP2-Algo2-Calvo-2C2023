@@ -1,9 +1,9 @@
-#include "./Headers/Jugador.h"
+#include "Headers/Jugador.h"
 
 Jugador::Jugador(std::string nombre){
     this->nombre = nombre;
     this->mazo = new Mazo();
-    this->tesorosRestantes = 0;
+    this->fichas = new Lista<Ficha*>();
 }
 
 Jugador::~Jugador(){
@@ -15,7 +15,13 @@ std::string Jugador::getNombre(){
 }
 
 int Jugador::getTesorosRestantes(){
-    return this->tesorosRestantes;
+    int contador = 0;
+    for(int x = 0; x < fichas->getSize() - 1; x++){
+        if(fichas->getLData(x)->getTipo() == TESORO){
+            contador++;
+        }
+    }
+    return contador;
 }
 
 Mazo* Jugador::getMazo(){
@@ -29,3 +35,13 @@ void Jugador::agregarCarta(TipoCartas tipo){
 void Jugador::removerCarta(TipoCartas tipo){
     this->mazo->removerCarta(tipo);
 }
+
+Lista<Ficha*>* Jugador::getListaFichas(){
+    //preguntar
+    return this->fichas;
+}
+
+int Jugador::getLenFichas(){
+    return fichas->getSize();
+}
+

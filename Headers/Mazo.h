@@ -3,6 +3,7 @@
 
 #include "../TDA/Lista.h"
 #include "Carta.h"
+#include <string>
 
 class Mazo{
     private:
@@ -15,9 +16,9 @@ class Mazo{
         Carta* obtenerCarta(TipoCartas tipo);
         bool estaVacio();
         int obtenerCantidadCartas(TipoCartas tipo);
-        void imprimirMazo(std::string jugador);
         Lista<Carta*>* obtenerMazo();
         void usarCarta(TipoCartas tipo);
+        std::string tipoDeCartaGlobal(TipoCartas tipo);
 };
 
 #endif

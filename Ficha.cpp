@@ -1,6 +1,6 @@
-#include "../Headers/Ficha.h"
+#include "./Headers/Ficha.h"
 
-Ficha::Ficha(TipoFichas tipo, Coordenada posicion) : posicion(posicion), tipo(tipo) {}
+Ficha::Ficha(TipoFichas tipo, Coordenada posicion, int jugadorOwner, int turnosInactiva, bool protrgido) : posicion(posicion), tipo(tipo), jugadorOwner(0), turnosInactiva(turnosInactiva) , protegido(false){}
 
 TipoFichas Ficha::getTipo(){
     return this->tipo;
@@ -16,4 +16,32 @@ void Ficha::setPosicion(Coordenada posicion){
 
 void Ficha::setTipo(TipoFichas tipo){
     this->tipo = tipo;
+}
+
+int Ficha::getJugadorOwner(){
+    return this->jugadorOwner;
+}
+
+void Ficha::setJugadorOwner(int jugadorOwner){
+    this->jugadorOwner = jugadorOwner;
+}
+
+void Ficha::setTurnosInactiva(int turnosInactiva){
+    this->turnosInactiva = turnosInactiva;
+}
+
+bool Ficha::estaInactiva(){
+    return this->turnosInactiva > 0;
+}
+
+void Ficha::restarTurnoInactiva(){
+    this->turnosInactiva--;
+}
+
+bool Ficha::estaProtegido(){
+    return this->protegido;
+}
+
+void Ficha::setProtegido(bool estado){
+    this->protegido = estado;
 }

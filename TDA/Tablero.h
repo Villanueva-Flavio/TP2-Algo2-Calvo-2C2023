@@ -23,7 +23,7 @@ template <class T> class Tablero {
         // PRE: Recibe 3 enteros positivos como Coordenada
         // POST: Devuelve el dato de la celda especificada
         T getTData(int n, int m, int l);
-        T getTData(Coordenada pos);
+        T getTDataC(Coordenada* pos);
 
         //PRE: Devuelve el tamanio del tablero en X
         int getTamanioX();
@@ -108,9 +108,8 @@ template <class T> T Tablero<T>::getTData(int n, int m, int l){
     return this->cubo->getLData(n)->getLData(m)->getLData(l);
 }
 
-template <class T> T Tablero<T>::getTData(Coordenada pos){
-    setCoordenada(pos.getX(), pos.getY(), pos.getZ());
-    return this->cubo->getLData(pos.getX())->getLData(pos.getY())->getLData(pos.getZ());
+template <class T> T Tablero<T>::getTDataC(Coordenada* pos){
+    return getTData(pos->getX(), pos->getY(), pos->getZ());
 }
 
 template <class T> void Tablero<T>::setCoordenada(int n, int m, int l){

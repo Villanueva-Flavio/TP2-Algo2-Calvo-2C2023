@@ -54,6 +54,8 @@ public:
 	// POST: Obtiene el tamaño de la lista
 	int getSize();
 
+	// POST: va a la iteracion asignada
+	void goTo(int x);
 };
 
 
@@ -162,6 +164,22 @@ template <class T> void Lista<T>::irANodo(int x){
     } else {
 		for(int i = this->getIter(); i < x; i++){
 				this->iterar(SIGUIENTE);
+		}
+	}
+}
+
+template <class T> void Lista<T>::goTo(int x){
+	int actual = this->getIter();
+	if(x < actual){
+		for(int i = actual; i > x; i--){
+			this->iterar(ANTERIOR);
+		}
+	} else if(x > actual){
+		if(x < actual + (this->getSize() - actual) / 2){
+			this->resetIter();
+		}
+		for(int i = actual; i < x; i++){
+			this->iterar(SIGUIENTE);
 		}
 	}
 }
