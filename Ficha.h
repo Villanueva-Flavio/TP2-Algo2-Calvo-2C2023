@@ -14,7 +14,6 @@ class Ficha{
         bool protegido;
 
     public:
-        Ficha(TipoFichas tipo, Coordenada posicion, int jugadorOwner, int turnosInactiva);
         Ficha(TipoFichas tipo, Coordenada posicion, int jugadorOwner, int turnosInactiva, bool protegido);
         TipoFichas getTipo();
         Coordenada getPosicion();

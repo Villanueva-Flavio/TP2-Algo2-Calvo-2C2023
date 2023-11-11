@@ -17,8 +17,6 @@ class Carta {
         void removerCarta();
         TipoCartas getTipo();
         int getCantidad();
-        void efectoBlindaje(Jugador* jugador);
-        void duplicarTesoro(int x, int y, int z);
 };
 
 #endif

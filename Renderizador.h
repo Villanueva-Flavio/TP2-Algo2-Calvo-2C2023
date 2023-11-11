@@ -28,10 +28,6 @@ bool colorEnRango(RGBApixel color);
 
 bool pixelEnRango(int px, int py, Coordenada imgSize);
 
-//bool colorDisponible(RGBApixel color, MapaColores mapa);
-
-//void setPlayerColor(RGBApixel* color, int jugador, MapaColores& mapa);
-
 int pixelSizeGet(RGBApixel color);
 
 bool pixelSizeEnRango(Coordenada pixelPos, Coordenada imgSize);
