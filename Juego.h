@@ -1,8 +1,7 @@
 #include <string>
-#include "Coordenada.h"
 #include "Tablero.h"
-#include "Ficha.h"
-#include "Carta.h"
+#include "Jugador.h"
+
 
 class Juego{
 public:

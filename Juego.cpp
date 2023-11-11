@@ -323,7 +323,6 @@ void Juego::imprimirMazo(){
 }
 
 void Juego::handlerMazo(){
-    Jugador* jugadorActual = this->jugadores->getLData(this->jugadores->getIter());
     Decision decision = NINGUNA;
     this->preguntarDecisionMazo(&decision);
     if(decision == SI){
@@ -412,6 +411,7 @@ void Juego::handlerMina(TipoFichas tipoDest, Coordenada* aux, bool* loopCheck){
             break;
 
         case TESORO:
+        case TESORO_DESENTERRADO:
             if(jugadorActual != jugadorDest){
                 this->mostrarAlertas("Tesoro encontrado, desenterrando\n", this->jugadores->getLData(jugadorActual));
                 this->colocarFicha(TESORO_DESENTERRADO, aux);
@@ -453,6 +453,7 @@ void Juego::handlerEspia(TipoFichas tipoDest, Coordenada* aux, bool* loopCheck){
             break;
 
         case TESORO:
+        case TESORO_DESENTERRADO:
             if(this->tablero->getTDataC(aux)->getJugadorOwner() != this->jugadores->getIter()){
                 this->mostrarAlertas("Tesoro encontrado, desenterrando\n", this->jugadores->getLData(jugadorActual));
                 this->colocarFicha(TESORO_DESENTERRADO, aux);
@@ -593,6 +594,7 @@ void Juego::handlerFicha(TipoFichas tipoSrc){
                 handlerEspia(tipoDest, aux, &loopCheck);
                 break;
             case TESORO:
+            case TESORO_DESENTERRADO:
                 handlerTesoro(&loopCheck);
                 break;
         }
