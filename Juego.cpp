@@ -33,6 +33,10 @@ void Juego::jugar(){
     while(this->estadoPartida == 0){
         this->jugarTurno();
     }
+    if(this->estadoPartida > 0){
+        cout << "El jugador " << this->jugadores->getLData(this->estadoPartida -1)->getNombre() << " ha ganado la partida" << endl;
+    }
+    this->~Juego();
 }
 
 int Juego::mostrarEstadoPartida(){
