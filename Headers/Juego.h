@@ -1,6 +1,6 @@
 #include <string>
 #include "Coordenada.h"
-#include "Tablero.h"
+#include "TDA/Tablero.h"
 #include "Ficha.h"
 #include "Jugador.h"
 #include "Enums.h"
@@ -43,6 +43,10 @@ private:
     void jugarCarta(int index);
     bool validarDecisionCarta(std::string decision);
     void imprimirMazo();
+    void radar(int x, int y, int z);
+    void duplicarTesoro(int x, int y, int z, Jugador* jugador);
+    void palaTunel(int x, int y, int z, Jugador* jugador);
+    void agentesDurmientes(Jugador* jugador);
     
     //Fichas
     std::string getFichaTipoGlobal(TipoFichas tipo);
@@ -67,3 +71,21 @@ private:
     void sacarFoto();
 
 };
+
+
+
+/*
+Carta Radar: Para implementar el efecto de esta carta, necesitarás: 
+una forma de buscar en el tablero las fichas que están a una distancia de 3 casillas de una posición dada. 
+Esto podría hacerse con un método en la clase Tablero que devuelva una lista de todas las fichas dentro de ese rango. 
+Luego, en el método aplicarEfecto de la clase Carta, puedes llamar a este método y mostrar al jugador las fichas encontradas.
+
+Carta Duplicar Tesoro: Para implementar esta carta, puedes: 
+añadir un método en la clase Jugador que duplique una de sus fichas de tesoro. 
+En el método aplicarEfecto de la clase Carta, puedes llamar a este método.
+
+Para ambas cartas, necesitarás: 
+añadir los nuevos tipos de cartas al enum TipoCartas y modificar el método aplicarEfecto de la clase Carta para manejar estos nuevos tipos.
+
+Espero que esto te ayude a implementar las nuevas cartas. ¡Buena suerte con tu proyecto! 😊
+*/

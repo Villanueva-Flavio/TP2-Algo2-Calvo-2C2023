@@ -11,9 +11,11 @@ class Ficha{
         int jugadorOwner;
         int turnosInactiva;
         TipoTerreno tipoTerreno; // IMPLEMENTAR
+        bool protegido;
 
     public:
         Ficha(TipoFichas tipo, Coordenada posicion, int jugadorOwner, int turnosInactiva);
+        Ficha(TipoFichas tipo, Coordenada posicion, int jugadorOwner, int turnosInactiva, bool protegido);
         TipoFichas getTipo();
         Coordenada getPosicion();
         void setPosicion(Coordenada posicion);
@@ -25,6 +27,8 @@ class Ficha{
         void restarTurnoInactiva();
         TipoTerreno getTipoTerreno();
         void setTipoTerreno(TipoTerreno tipo);
+        bool estaProtegido();
+        void setProtegido(bool estado);
 };
 
 #endif

@@ -1,9 +1,21 @@
 #include "./Headers/Juego.h"
+#include <iostream>
 #include <string>
+#include <stdlib.h>
+#include <stdio.h>
+#include <sstream>
 #include "./Headers/Enums.h"
 #include "./Headers/Renderizador.h"
 
 using namespace std;
+
+string IntToString(int a)
+{
+    ostringstream temp;
+    temp << a;
+    return temp.str();
+}
+
 
 Juego::Juego(int jugadores){
     int size = jugadores * 4;
@@ -126,6 +138,133 @@ void Juego::preguntarDecisionCarta(Decision* decision){
         *decision = NO;
     } else if (aux == "salir"){
         *decision = SALIR;
+    }
+}
+
+/*=============================================================CARTAS============================================================================================*/
+
+/*ABOMINACION EN PROCESO*/
+
+void Juego::radar(int x, int y, int z){
+    while (!this->tablero->inRange(x,y,z))
+    {
+        //se hace aca si no esta en rango.
+    }
+    int casillaX = tablero->getTamanioX();
+    int casillaY = tablero->getTamanioY();
+    int casillaZ = tablero->getTamanioZ();
+    
+    int realX = x - casillaX;   //resta la coordenada actual con el borde del tablero
+    int realY = y - casillaY;
+    int realZ = z - casillaZ;
+
+    if((realX >= 3) && (realY >= 3) && (realZ >= 3)){
+        //incluyendo hasta el borde.
+        Ficha* casillaActual = tablero->getTData(x,y,z);
+        //ver si la condicion es menor o menor o igual
+        for(int i = 0; i < 3; i++){
+            for(int j = 0; j < 3; j++){
+                for(int k = 0; k < 3; k++){
+                    if((casillaActual->getTipo() == TESORO) && (!casillaActual->estaProtegido())){
+                        cout << "HAY UN TESORO EN LAS COORDENADAS: " << x << " " << y << " " << z << " " << endl;
+                    }
+                }
+            }
+        }
+    }
+    else if (realX < 3){
+        Ficha* casillaActual = tablero->getTData(x,y,z);
+        //ver si la condicion es menor o menor o igual
+        for(int i = 0; i < 2; i++){
+            for(int j = 0; j < 3; j++){
+                for(int k = 0; k < 3; k++){
+                    if((casillaActual->getTipo() == TESORO) && (!casillaActual->estaProtegido())){
+                        cout << "HAY UN TESORO EN LAS COORDENADAS: " << x << " " << y << " " << z << " " << endl;
+                    }
+                }
+            }
+        }
+    }
+    else if (realY < 2){
+        Ficha* casillaActual = tablero->getTData(x,y,z);
+        //ver si la condicion es menor o menor o igual
+        for(int i = 0; i < 3; i++){
+            for(int j = 0; j < 2; j++){
+                for(int k = 0; k < 3; k++){
+                    if((casillaActual->getTipo() == TESORO) && (!casillaActual->estaProtegido())){
+                        cout << "HAY UN TESORO EN LAS COORDENADAS: " << x << " " << y << " " << z << " " << endl;
+                    }
+                }
+            }
+        }
+    }
+    else if (realZ < 3){
+        Ficha* casillaActual = tablero->getTData(x,y,z);
+        //ver si la condicion es menor o menor o igual
+        for(int i = 0; i < 3; i++){
+            for(int j = 0; j < 3; j++){
+                for(int k = 0; k < 3; k++){
+                    if((casillaActual->getTipo() == TESORO) && (!casillaActual->estaProtegido())){
+                        cout << "HAY UN TESORO EN LAS COORDENADAS: " << x << " " << y << " " << z << " " << endl;
+                    }
+                }
+            }
+        }
+    }
+}
+
+//las coordenadas que se ingresan son donde se piensa colocar el tesoro.
+void Juego::duplicarTesoro(int x, int y, int z, Jugador* jugador){
+    while((this->tablero->getTData(x,y,z)->getTipo() == TESORO)){
+        cout << "Error! hay un tesoro en esa posicion. Ingrese una nueva coordenada.\n" << endl;
+        cin >> x >> y >> z;
+    }
+    Coordenada* pos = new Coordenada(x,y,z);
+    colocarFicha(TESORO, pos);
+    Ficha* nFicha = this->tablero->getTData(x,y,z);
+    jugador->getListaFichas()->add(nFicha);
+    //ver como se incrementa el numero de tesoros y si hay confilicto con mas de 4 
+}
+
+//x, y, z son las coordenadas de la ficha que se desea mover (solo valido para minas, tesoros, espias)
+void Juego::palaTunel(int x, int y, int z, Jugador* jugador){
+    Ficha* fichaPos = this->tablero->getTData(x,y,z);
+    while((fichaPos->getTipo() != TESORO) || (fichaPos->getTipo() != ESPIA) || fichaPos->getTipo() != MINA){
+        cout<<"Error, ficha no valida para movimiento, intente con otra ficha.\n" << endl;
+        cout<<"Ingrese las coordenadas de la ficha deseada en formato x, y, z\n" << endl;
+        cin >> x >> y >> z;
+        fichaPos = this->tablero->getTData(x,y,z);
+    }
+    int i, j, k;
+    cout<< "Ingrese la coordenada donde desea mover la ficha en formato x, y ,z\n" << endl;
+    cin >> i >> j >> k;
+    ///preguntar
+    Ficha* vacio = this->tablero->getTData(i,j,k);
+    while(vacio->getTipo() != VACIO){
+        cout << "Error! esa casilla no esta vacia, por favor ingrese otras coordenadas,\n" << endl;
+        cin >> i >> j >> k;
+        vacio = this->tablero->getTData(i,j,k);
+    }
+    Coordenada* pos = new Coordenada(i,j,k);
+    //como se mueve la ficha, supongo que no hace falta eliminarla del tablero.
+    colocarFicha(fichaPos->getTipo(), pos);
+    //actualiza la ficha a vacio
+    this->tablero->setTData(x,y,z,vacio);
+
+    //hara falta revisar las interacciones si un tesoro va donde un enemigo, espia en espia, mina en tesoro, etc...
+}
+
+void Juego::agentesDurmientes(Jugador* jugador){
+    string name = jugador->getNombre();
+    string aux;
+    int lenJugadores = jugadores->getSize();
+    for(int x = 0; x < lenJugadores - 1; x++){
+        Jugador* jugadorActual = this->jugadores->getLData(x);
+        //Lista<Ficha*>* fichas = jugadorActual->getListaFichas();
+        aux = jugadorActual->getNombre();
+        if(name != aux){
+            jugadorActual->getListaFichas()->getLData(x)->setTurnosInactiva(1);  
+        }
     }
 }
 

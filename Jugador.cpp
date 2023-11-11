@@ -1,4 +1,4 @@
-#include "./Headers/Jugador.h"
+#include "Headers/Jugador.h"
 
 Jugador::Jugador(std::string nombre){
     this->nombre = nombre;
@@ -37,3 +37,13 @@ void Jugador::agregarCarta(TipoCartas tipo){
 void Jugador::removerCarta(TipoCartas tipo){
     this->mazo->removerCarta(tipo);
 }
+
+Lista<Ficha*>* Jugador::getListaFichas(){
+    //preguntar
+    return this->fichas;
+}
+
+int Jugador::getLenFichas(){
+    return fichas->getSize();
+}
+
