@@ -1,11 +1,11 @@
 #ifndef __RENDERIZADOR_H__
 #define __RENDERIZADOR_H__
 
-#include "../TDA/Tablero.h"
-#include "../EasyBMP/EasyBMP.h"
-#include "./Coordenada.h"
-#include "./CoordenadaDouble.h"
-#include "./Ficha.h"
+#include "Tablero.h"
+#include "EasyBMP.h"
+#include "Coordenada.h"
+#include "CoordenadaDouble.h"
+#include "Ficha.h"
 
 #define IZQUIERDA 0
 #define DERECHA 1

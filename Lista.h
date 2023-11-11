@@ -1,6 +1,6 @@
 #include <iostream>
 #include "Nodo.h"
-#include "../Headers/Enums.h"
+#include "Enums.h"
 
 #ifndef __LISTA_H__
 #define __LISTA_H__

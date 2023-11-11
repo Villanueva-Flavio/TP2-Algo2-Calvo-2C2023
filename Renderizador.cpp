@@ -2,7 +2,7 @@
 #include <string>
 #include <iostream>
 #include "Tablero.h"
-#include "./Headers/Renderizador.h"
+#include "Renderizador.h"
 #include "Enums.h"
 
 //RENDER

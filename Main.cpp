@@ -1,4 +1,4 @@
-#include "./Headers/Juego.h"
+#include "Juego.h"
 
 void preguntarCantidadJugadores(int* jugadores){
     std::cout << "Ingrese la cantidad de jugadores (2-10): ";

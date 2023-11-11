@@ -1,8 +1,8 @@
 #ifndef __MAZO_H__
 #define __MAZO_H__
 
-#include "../TDA/Lista.h"
 #include "Carta.h"
+#include "Lista.h"
 #include <string>
 
 class Mazo{

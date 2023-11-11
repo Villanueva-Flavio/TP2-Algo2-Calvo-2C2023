@@ -9,7 +9,7 @@
 class Jugador{
     private:
         std::string nombre;
-        Mazo *mazo;
+        Mazo* mazo;
         Lista<Ficha*>* fichas;
         //Lista<Coordenada*>* 
     

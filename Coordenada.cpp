@@ -1,4 +1,4 @@
-#include "./Headers/Coordenada.h"
+#include "Coordenada.h"
 #include <iostream>
 
 Coordenada::Coordenada(int x, int y, int z){

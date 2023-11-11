@@ -1,4 +1,4 @@
-#include "./Headers/Carta.h"
+#include "Carta.h"
 
 Carta::Carta(TipoCartas tipo){
     this->tipo = tipo;

@@ -1,11 +1,11 @@
-#include "./Headers/Juego.h"
+#include "Juego.h"
 #include <iostream>
 #include <string>
 #include <stdlib.h>
 #include <stdio.h>
 #include <sstream>
-#include "./Headers/Enums.h"
-#include "./Headers/Renderizador.h"
+#include "Enums.h"
+#include "Renderizador.h"
 
 using namespace std;
 
@@ -76,7 +76,8 @@ string Juego::preguntarNombre(){
 
 void Juego::cargarJugadores(int jugadores){
     for(int i = 0; i < jugadores; i ++){
-        this->jugadores->add(new Jugador(this->preguntarNombre()));
+        std::string nombre = this->preguntarNombre();
+        this->jugadores->add(new Jugador(nombre));
         for(int j = 0; j < 4; j ++){
             this->cargarTesoros();
         }
@@ -104,10 +105,7 @@ bool Juego::validarNombre(string nombre){
 }
 
 bool Juego::coordenadaValida(Coordenada* pos){
-    bool resultado = true;
-    if(this->tablero->getTDataC(pos)->getTipo() == TESORO){
-        resultado = false;
-    }
+    return (this->tablero->getTDataC(pos)->getTipo() != TESORO);
 }
 
 bool Juego::validarLimitePosicion(Coordenada* pos){
@@ -401,7 +399,7 @@ void Juego::colocarFicha(TipoFichas tipo, Coordenada* pos){
     this->tablero->getTDataC(pos)->setTipo(tipo);
 }
 
-void Juego::colocarFicha(TipoFichas tipo, Coordenada* pos, int jugadorNuevo){
+void Juego::colocarFichaN(TipoFichas tipo, Coordenada* pos, int jugadorNuevo){
     this->tablero->getTDataC(pos)->setTipo(tipo);
     this->tablero->getTDataC(pos)->setJugadorOwner(jugadorNuevo);
 }
@@ -427,7 +425,7 @@ void Juego::handlerMina(TipoFichas tipoDest, Coordenada* aux, bool* loopCheck){
         case ESPIA:
             if(jugadorActual != jugadorDest){
                 this->mostrarAlertas("Espia eliminado\n", this->jugadores->getLData(jugadorActual));
-                this->colocarFicha(VACIO, aux, 0);
+                this->colocarFichaN(VACIO, aux, 0);
                 *loopCheck = true;
                 break;
             }
@@ -435,7 +433,7 @@ void Juego::handlerMina(TipoFichas tipoDest, Coordenada* aux, bool* loopCheck){
             break;
 
         case VACIO:
-            this->colocarFicha(MINA, aux, this->jugadores->getIter());
+            this->colocarFichaN(MINA, aux, this->jugadores->getIter());
             *loopCheck = true;
             break;
     }
@@ -448,7 +446,7 @@ void Juego::handlerEspia(TipoFichas tipoDest, Coordenada* aux, bool* loopCheck){
         case MINA:
             if(jugadorActual != jugadorDest){
                 this->mostrarAlertas("Espia perdido en una mina\n", this->jugadores->getLData(jugadorActual));
-                this->colocarFicha(VACIO, aux, 0);
+                this->colocarFichaN(VACIO, aux, 0);
                 *loopCheck = true;
                 break;
             }
@@ -468,7 +466,7 @@ void Juego::handlerEspia(TipoFichas tipoDest, Coordenada* aux, bool* loopCheck){
         case ESPIA:
             if(jugadorActual != jugadorDest){
                 this->mostrarAlertas("Espia eliminado\n", this->jugadores->getLData(jugadorActual));
-                this->colocarFicha(VACIO, aux, 0);
+                this->colocarFichaN(VACIO, aux, 0);
                 *loopCheck = true;
                 break;
             }
@@ -476,7 +474,7 @@ void Juego::handlerEspia(TipoFichas tipoDest, Coordenada* aux, bool* loopCheck){
             break;
 
         case VACIO:
-            this->colocarFicha(ESPIA, aux, this->jugadores->getIter());
+            this->colocarFichaN(ESPIA, aux, this->jugadores->getIter());
             *loopCheck = true;
             break;
     }
@@ -542,8 +540,8 @@ void Juego::handlerTesoro(bool* loopCheck){
         case MINA:
             if(jugadorActual != jugadorDest){
                 cout << "Moviste el tesoro sobre una mina, queda desenterrado" << endl;
-                this->colocarFicha(TESORO_DESENTERRADO, auxDest, jugadorActual);
-                this->colocarFicha(VACIO, auxSrc, 0);
+                this->colocarFichaN(TESORO_DESENTERRADO, auxDest, jugadorActual);
+                this->colocarFichaN(VACIO, auxSrc, 0);
                 *loopCheck = true;
                 break;
             }
@@ -557,8 +555,8 @@ void Juego::handlerTesoro(bool* loopCheck){
         case ESPIA:
             if(jugadorActual != jugadorDest){
                 cout << "Un espía encontro tu tesoro" << endl;
-                this->colocarFicha(VACIO, auxDest, 0);
-                this->colocarFicha(VACIO, auxSrc, 0);
+                this->colocarFichaN(VACIO, auxDest, 0);
+                this->colocarFichaN(VACIO, auxSrc, 0);
                 *loopCheck = true;
                 break;
             }
@@ -566,8 +564,8 @@ void Juego::handlerTesoro(bool* loopCheck){
             break;
 
         case VACIO:
-            this->colocarFicha(tipoSrc, auxDest, jugadorActual);
-            this->colocarFicha(VACIO, auxSrc, 0);
+            this->colocarFichaN(tipoSrc, auxDest, jugadorActual);
+            this->colocarFichaN(VACIO, auxSrc, 0);
             *loopCheck = true;
             break;
     }

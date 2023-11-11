@@ -1,6 +1,6 @@
 #include <string>
 #include "Coordenada.h"
-#include "../TDA/Tablero.h"
+#include "Tablero.h"
 #include "Ficha.h"
 #include "Jugador.h"
 #include "Enums.h"
@@ -23,7 +23,7 @@ private:
     //Iniciar juego
     void cargarTablero(); 
     void cargarTesoros();
-    string preguntarNombre();
+    std::string preguntarNombre();
     void cargarJugadores(int jugadores);
     bool validarNombre(std::string nombre);
     bool coordenadaValida(Coordenada* pos);
@@ -50,14 +50,13 @@ private:
     
     //Fichas
     std::string getFichaTipoGlobal(TipoFichas tipo);
-    void colocarFicha(TipoFichas tipo, Coordenada* pos);
     void handlerCoordenadaFicha(Coordenada* aux, TipoFichas tipoSrc);
     void handlerFicha(TipoFichas tipoSrc);
     bool validarNumeroFicha(int index);
     void preguntarCoordenada(Coordenada* pos);
     bool distanciaContigua(Coordenada* c1, Coordenada* c2);
     void colocarFicha(TipoFichas tipo, Coordenada* pos);
-    void colocarFicha(TipoFichas tipo, Coordenada* pos, int jugadorNuevo);
+    void colocarFichaN(TipoFichas tipo, Coordenada* pos, int jugadorNuevo);
     void seleccionarTesoro(int* fichaSeleccionada, Coordenada* auxSrc, Coordenada* auxDest);
     void imprimirFichas();
     void handlerMina(TipoFichas tipoDest, Coordenada* aux, bool* loopCheck);

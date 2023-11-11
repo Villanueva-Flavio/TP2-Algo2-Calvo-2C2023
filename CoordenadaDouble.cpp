@@ -1,4 +1,4 @@
-#include "./Headers/CoordenadaDouble.h"
+#include "CoordenadaDouble.h"
 
 CoordenadaDouble::CoordenadaDouble(double x, double y, double z){
     this->x = x;

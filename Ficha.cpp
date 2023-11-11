@@ -1,4 +1,4 @@
-#include "./Headers/Ficha.h"
+#include "Ficha.h"
 
 Ficha::Ficha(TipoFichas tipo, Coordenada posicion, int jugadorOwner, int turnosInactiva, bool protrgido) : posicion(posicion), tipo(tipo), jugadorOwner(0), turnosInactiva(turnosInactiva) , protegido(false){}
 

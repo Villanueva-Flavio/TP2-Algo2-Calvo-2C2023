@@ -1,4 +1,4 @@
-#include "./Headers/Mazo.h"
+#include "Mazo.h"
 using namespace std;
 
 Mazo::Mazo(){
@@ -38,6 +38,7 @@ Carta* Mazo::obtenerCarta(TipoCartas tipo){
     } catch (TipoCartas e) {
         std::cout << "CardNotFoundException ("<< e <<")" << std::endl;
     }
+    return NULL;
 }
 
 bool Mazo::estaVacio(){
@@ -50,6 +51,7 @@ int Mazo::obtenerCantidadCartas(TipoCartas tipo){
             return this->mazo->getLData(i)->getCantidad();
         }
     }
+    return 0;
 }
 
 Lista<Carta*>* Mazo::obtenerMazo(){
@@ -95,4 +97,5 @@ string Mazo::tipoDeCartaGlobal(TipoCartas tipo){
         case BOMBA_DE_RACIMO:
             return "Bomba de racimo";
     }
+    return "";
 }

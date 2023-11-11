@@ -1,9 +1,9 @@
-
 #ifndef __CARTA_H__
 #define __CARTA_H__
+
 #include "Enums.h"
 #include "Jugador.h"
-#include "../TDA/Tablero.h"
+#include "Tablero.h"
 
 class Carta {
     private:

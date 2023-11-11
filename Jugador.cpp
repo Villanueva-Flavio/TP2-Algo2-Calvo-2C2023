@@ -1,4 +1,4 @@
-#include "Headers/Jugador.h"
+#include "Jugador.h"
 
 Jugador::Jugador(std::string nombre){
     this->nombre = nombre;
