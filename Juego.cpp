@@ -4,7 +4,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <sstream>
-#include "Enums.h"
 #include "Renderizador.h"
 
 using namespace std;
@@ -316,7 +315,7 @@ void Juego::imprimirMazo(){
     Jugador* jugador = this->jugadores->getLData(this->jugadores->getIter());
     string alerta;
     for(int i = 0; i < 6; i++){
-        string cantidad = to_string(jugador->getMazo()->obtenerCantidadCartas((TipoCartas)i));
+        string cantidad = IntToString(jugador->getMazo()->obtenerCantidadCartas((TipoCartas)i));
         alerta = jugador->getMazo()->tipoDeCartaGlobal((TipoCartas)i) + ": " + cantidad + "\n";
         this->mostrarAlertas(alerta, jugador);
     }

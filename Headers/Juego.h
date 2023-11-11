@@ -1,7 +1,7 @@
 #include <string>
-#include "Coordenada.h"
+#include "Ficha.h"  //ficha ya tiene coordenada y enums
+//#include "Jugador.h" //carta ya tiene a jugador
 #include "Tablero.h"
-#include "Ficha.h"
 #include "Carta.h"
 
 class Juego{
@@ -49,13 +49,14 @@ private:
     
     //Fichas
     std::string getFichaTipoGlobal(TipoFichas tipo);
+    void colocarFicha(TipoFichas tipo, Coordenada* pos);
     void handlerCoordenadaFicha(Coordenada* aux, TipoFichas tipoSrc);
     void handlerFicha(TipoFichas tipoSrc);
     bool validarNumeroFicha(int index);
     void preguntarCoordenada(Coordenada* pos);
     bool distanciaContigua(Coordenada* c1, Coordenada* c2);
     void colocarFicha(TipoFichas tipo, Coordenada* pos);
-    void colocarFichaN(TipoFichas tipo, Coordenada* pos, int jugadorNuevo);
+    void colocarFicha(TipoFichas tipo, Coordenada* pos, int jugadorNuevo);
     void seleccionarTesoro(int* fichaSeleccionada, Coordenada* auxSrc, Coordenada* auxDest);
     void imprimirFichas();
     void handlerMina(TipoFichas tipoDest, Coordenada* aux, bool* loopCheck);

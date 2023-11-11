@@ -23,7 +23,6 @@ int Carta::getCantidad(){
 
 void Carta::efectoBlindaje(Jugador* jugador){
     //Protege las fichas del jugador.
-
     //preguntar
     Lista<Ficha*>* fichas = jugador->getListaFichas();
     for(int x = 0; x < jugador->getLenFichas(); x++){
@@ -32,8 +31,4 @@ void Carta::efectoBlindaje(Jugador* jugador){
             ficha->setProtegido(true);
         }
     }
-}
-
-void Carta::duplicarTesoro(int x, int y, int z){
-    
 }
