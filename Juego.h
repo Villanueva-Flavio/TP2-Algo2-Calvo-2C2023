@@ -41,10 +41,13 @@ private:
     void jugarCarta(int index);
     bool validarDecisionCarta(std::string decision);
     void imprimirMazo();
-    void radar(int x, int y, int z);
+    void blindaje(Jugador* jugador);
+    bool margenTableo(int x, int y, int z);
+    void radar(Jugador* jugador);
     void duplicarTesoro(int x, int y, int z, Jugador* jugador);
     void palaTunel(int x, int y, int z, Jugador* jugador);
     void agentesDurmientes(Jugador* jugador);
+    void racimoBomba(Jugador* jugador);
     
     //Fichas
     std::string getFichaTipoGlobal(TipoFichas tipo);
