@@ -44,6 +44,7 @@ private:
     void blindaje(Jugador* jugador);
     bool margenTableo(int x, int y, int z);
     void radar(Jugador* jugador);
+    void usoRadar(Jugador* p);
     void duplicarTesoro(int x, int y, int z, Jugador* jugador);
     void palaTunel(int x, int y, int z, Jugador* jugador);
     void agentesDurmientes(Jugador* jugador);

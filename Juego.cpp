@@ -148,10 +148,9 @@ void Juego::blindaje(Jugador* jugador){
         ficha->setProtegido(true);
     }
 }
-/*ABOMINACION EN PROCESO*/
-
+/*RADAR:
+*/
 bool Juego::margenTableo(int x, int y, int z){
-    bool condicion = false;
     int i = tablero->getTamanioX();
     int j = tablero->getTamanioY();
     int k = tablero->getTamanioZ();
@@ -159,10 +158,10 @@ bool Juego::margenTableo(int x, int y, int z){
     int ejeY = y - j;
     int ejeZ = z - k;
     if((ejeX >= 3) && (ejeY >= 3) && (ejeZ >= 3)){
-        condicion = true;
+        return true;
     }
     cout <<"Error! el valor minimo posible es (3,3,3)" << '\n' << endl;
-    return condicion;
+    return false;
 }
 
 //x, y, z son las coordenadas donde se colocara el radar
@@ -170,9 +169,6 @@ void Juego::radar(Jugador* player){
     int x,y,z;
     cout <<"Ingrese las coordenadas donde desea poner el radar. Use formato x,y,z"<< '\n' << endl;
     cin >> x >> y >> z;
-    //abominacion
-    //condicion
-    bool condicion;
     while((!this->tablero->inRange(x,y,z)) && (this->tablero->getTData(x,y,z)->getTipo() != VACIO) &&(!margenTableo(x,y,z))){
         cout <<"Coordenada/Casilla invalida.\nIngrese nuevas coordenadas:" << endl;
         cin >> x >> y >> z;
@@ -189,8 +185,21 @@ void Juego::radar(Jugador* player){
     }
     
 }
-
-
+//Hace radar sobre todos los jugadores menos quien la usa.
+void Juego::usoRadar(Jugador* p){
+    int len = jugadores->getSize();
+    string name = p->getNombre();
+    string aux;
+    for(int x = 0; x < len; x++){
+        Jugador* currentPlayer = this->jugadores->getLData(x);  //se almacena la data de ese jugador.
+        aux = currentPlayer->getNombre();
+        if(name != aux){
+            radar(currentPlayer);
+        }
+    }
+}
+/*END.
+*/
 //las coordenadas que se ingresan son donde se piensa colocar el tesoro.
 void Juego::duplicarTesoro(int x, int y, int z, Jugador* jugador){
     while((this->tablero->getTData(x,y,z)->getTipo() == TESORO)){
