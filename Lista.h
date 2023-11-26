@@ -156,7 +156,7 @@ template <class T> void Lista<T>::irANodo(int x){
 template <class T> void Lista<T>::remove(int pos){
 	irANodo(pos);
 	Nodo<T>* deadNode = this->getNodo();
-	if(this->getSize > 1){
+	if(this->getSize() > 1){
 		if(deadNode == this->primero){
 			//se elimina la primera carta.
 			this->primero->setSig(deadNode->next());
