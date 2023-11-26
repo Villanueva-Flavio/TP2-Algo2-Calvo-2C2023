@@ -46,7 +46,7 @@ template <class T> class Tablero {
         void setCoordenada(int n, int m, int l);
 };
 
-template <class T> Tablero<T>::Tablero(int n, int m, int l) {
+/*template <class T> Tablero<T>::Tablero(int n, int m, int l) {
     this->x = n, this->y = m, this->z = l;
     cubo = new Lista<Lista<Lista<T>*>*>();
     for (int i = 0; i < n; i++) {
@@ -56,6 +56,23 @@ template <class T> Tablero<T>::Tablero(int n, int m, int l) {
             for (int k = 0; k < l; k++) {
                 T *celda = new T();
                 fila->add(celda);           //Error con el parametro celda. Cannot convert Ficha** to Ficha*
+            }
+            plano->add(fila);
+        }
+        cubo->add(plano);
+    }
+}*/
+
+template <class T> Tablero<T>::Tablero(int i, int j, int k){
+    this->x = i, this->y = j, this->z = k;
+    cubo = new Lista<Lista<Lista<T>*>*>();
+    for(int l = 0; l < i; l++){
+        Lista<Lista<T>*>* plano = new Lista<Lista<T>*>();
+        for(int n = 0; n < j; n++){
+            Lista<T>* fila = new Lista<T>();
+            for(int m = 0; m < k; m++){
+                T celda = new T();
+                fila->add(celda);
             }
             plano->add(fila);
         }
