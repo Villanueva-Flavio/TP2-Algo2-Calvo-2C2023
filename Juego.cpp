@@ -209,7 +209,8 @@ void Juego::duplicarTesoro(int x, int y, int z, Jugador* jugador){
     Coordenada* pos = new Coordenada(x,y,z);
     colocarFicha(TESORO, pos);
     Ficha* nFicha = this->tablero->getTData(x,y,z);
-    jugador->getListaFichas()->add(nFicha);
+    //HACER FUNCION EN JUGADOR PARA ANADIR LA FICHA.
+    //jugador->getListaFichas()->add(nFicha); //---> Aca esta el problema, probablemente.
     //ver como se incrementa el numero de tesoros y si hay confilicto con mas de 4 
 }
 
@@ -231,12 +232,14 @@ void Juego::palaTunel(int x, int y, int z, Jugador* jugador){
         cin >> i >> j >> k;
         vacio = this->tablero->getTData(i,j,k);
     }
+    Coordenada* oldPLace = new Coordenada(x,y,z);
     Coordenada* pos = new Coordenada(i,j,k);
     //como se mueve la ficha, supongo que no hace falta eliminarla del tablero.
     colocarFicha(fichaPos->getTipo(), pos);
     //actualiza la ficha a vacio
     fichaPos->setTipo(VACIO);
-    this->tablero->setTData(x,y,z,fichaPos);
+    //Problema solucionado: actualizacion del tablero a vacio
+    colocarFicha(VACIO,oldPLace);   //<----------- aca se puede dar una parte del bug.
     //hara falta revisar las interacciones si un tesoro va donde un enemigo, espia en espia, mina en tesoro, etc...
 }
 
@@ -268,7 +271,8 @@ void Juego::racimoBomba(Jugador* jugador){
         Coordenada* pos = new Coordenada(x,y,z);
         colocarFicha(MINA, pos);
         Ficha* nMina = this->tablero->getTDataC(pos);
-        jugador->getListaFichas()->add(nMina);
+        //HACER FUNCION EN JUGADOR PARA ANADIR LAS FICHAS
+        //jugador->getListaFichas()->add(nMina);          //probablemente aca tambien haya un problema.
     }
 }
 

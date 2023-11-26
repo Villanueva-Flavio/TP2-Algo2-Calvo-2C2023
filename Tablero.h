@@ -55,7 +55,7 @@ template <class T> Tablero<T>::Tablero(int n, int m, int l) {
             Lista<T>* fila = new Lista<T>();
             for (int k = 0; k < l; k++) {
                 T *celda = new T();
-                fila->add(celda);
+                fila->add(celda);           //Error con el parametro celda. Cannot convert Ficha** to Ficha*
             }
             plano->add(fila);
         }
@@ -95,7 +95,7 @@ template <class T> int Tablero<T>::getTamanioZ() {
 template <class T> void Tablero<T>::setTData(int n, int m, int l, T data){
     setCoordenada(n, m, l);
 
-    this->cubo->getLData(n)->getLData(m)->getLData(l)->setNData(data);
+    this->cubo->getLData(n)->getLData(m)->getLData(l)->setNData(data);      //Problema con la clase ficha. mas con el metodo setNData. (PROBLEMA RESUELTO);
 }
 
 template <class T> void Tablero<T>::setTDataC(Coordenada* pos, T data){
