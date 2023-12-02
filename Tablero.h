@@ -71,8 +71,8 @@ template <class T> Tablero<T>::Tablero(int i, int j, int k){
         for(int n = 0; n < j; n++){
             Lista<T>* fila = new Lista<T>();
             for(int m = 0; m < k; m++){
-                T celda = new T();
-                fila->add(celda);
+                T* celda = new T();
+                fila->add(*celda);
             }
             plano->add(fila);
         }

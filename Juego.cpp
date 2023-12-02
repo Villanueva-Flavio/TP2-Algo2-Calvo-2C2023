@@ -626,7 +626,7 @@ void Juego::limpiarArchivo(Jugador* jugadorActual){
     fclose(archivo);
 }
 
-void Juego::sacarFoto(){
+/*void Juego::sacarFoto(){
     Jugador* jugadorActual = this->jugadores->getLData(this->jugadores->getIter());
     Coordenada* imgSize = new Coordenada(this->tablero->getTamanioX() * 100, this->tablero->getTamanioY() * 70, 0);
     BMP* imagen = new BMP();
@@ -636,14 +636,14 @@ void Juego::sacarFoto(){
     imagen->WriteToFile(fileName.c_str());
     delete imagen;
     delete imgSize;
-}
+}*/
 
 void Juego::jugarTurno(){
     int res;
     for(int i = 0; i < this->jugadores->getSize(); i++){
         this->jugadores->goTo(i);
         if(this->estadoPartida == 0 && this->jugadores->getLData(i)->getTesorosRestantes() > 0){
-            this->sacarFoto();
+            //this->sacarFoto();
             this->limpiarArchivo(this->jugadores->getLData(i));
             this->mostrarTablero();
             this->recibirCarta(&res);
