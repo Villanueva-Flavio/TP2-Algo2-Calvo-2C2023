@@ -111,7 +111,7 @@ template <class T> T Lista<T>::getLData(int x) {
 	return this->iterador->getNData();
 }
 
-template <class T> void Lista<T>::add(T data) {
+template <class T> void Lista<T>::add(T data) {			//Problemas al inicializar la Ficha* 
 	Nodo<T>* nuevo = new Nodo<T>(data);
 	iterar(FINAL);
 	if(this->getSize() == 0){
@@ -122,21 +122,6 @@ template <class T> void Lista<T>::add(T data) {
 		this->iterador->setSig(nuevo);
 	}
 	this->size++;
-}
-
-template <class T> void Lista<T>::remove(int x) {
-	irANodo(x);
-	if(this->getSize() > 1){
-		this->getIter()->setSig(this->siguiente);
-		this->siguiente->setAnt(this->anterior);
-		if(this->iterador == this->primero){
-			this->primero = this->siguiente;
-		}
-		delete this->iterador;
-	} else {
-		delete this->iterador;
-		this->primero = NULL;
-	}
 }
 
 template <class T> int Lista<T>::getIter() {
@@ -167,6 +152,32 @@ template <class T> void Lista<T>::irANodo(int x){
 		}
 	}
 }
+
+template <class T> void Lista<T>::remove(int pos){
+	irANodo(pos);
+	Nodo<T>* deadNode = this->getNodo();
+	if(this->getSize() > 1){
+		if(deadNode == this->primero){
+			//se elimina la primera carta.
+			this->primero->setSig(deadNode->next());
+			this->primero->setAnt(NULL);
+			delete deadNode;
+		}
+		else{
+			Nodo<T>* prox = deadNode->next();
+			Nodo<T>* prv = deadNode->prev();
+			prv->setSig(prox);
+			prox->setAnt(prv);
+			delete deadNode;
+		}
+	}else{
+		//solo un elemento.
+		delete deadNode;
+		this->primero = NULL;
+	}
+	size--;
+}
+
 
 template <class T> void Lista<T>::goTo(int x){
 	int actual = this->getIter();

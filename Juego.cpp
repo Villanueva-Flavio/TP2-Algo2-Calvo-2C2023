@@ -140,76 +140,66 @@ void Juego::preguntarDecisionCarta(Decision* decision){
 
 /*=============================================================CARTAS============================================================================================*/
 
-/*ABOMINACION EN PROCESO*/
-
-void Juego::radar(int x, int y, int z){
-    while (!this->tablero->inRange(x,y,z))
-    {
-        //se hace aca si no esta en rango.
+void Juego::blindaje(Jugador* jugador){
+    int len = jugador->getLenFichas();
+    for(int x = 0; x < len; x++){
+        //suponiendo que solo se almacenen tesoros y espias.
+        Ficha* ficha = jugador->getListaFichas()->getLData(x);
+        ficha->setProtegido(true);
     }
-    int casillaX = tablero->getTamanioX();
-    int casillaY = tablero->getTamanioY();
-    int casillaZ = tablero->getTamanioZ();
+}
+/*RADAR:
+*/
+bool Juego::margenTableo(int x, int y, int z){
+    int i = tablero->getTamanioX();
+    int j = tablero->getTamanioY();
+    int k = tablero->getTamanioZ();
+    int ejeX = x - i;
+    int ejeY = y - j;
+    int ejeZ = z - k;
+    if((ejeX >= 3) && (ejeY >= 3) && (ejeZ >= 3)){
+        return true;
+    }
+    cout <<"Error! el valor minimo posible es (3,3,3)" << '\n' << endl;
+    return false;
+}
+
+//x, y, z son las coordenadas donde se colocara el radar
+void Juego::radar(Jugador* player){
+    int x,y,z;
+    cout <<"Ingrese las coordenadas donde desea poner el radar. Use formato x,y,z"<< '\n' << endl;
+    cin >> x >> y >> z;
+    while((!this->tablero->inRange(x,y,z)) && (this->tablero->getTData(x,y,z)->getTipo() != VACIO) &&(!margenTableo(x,y,z))){
+        cout <<"Coordenada/Casilla invalida.\nIngrese nuevas coordenadas:" << endl;
+        cin >> x >> y >> z;
+    }
+    for(int i = 0; i < 3; i++){
+        for(int j = 0; j < 3; j++){
+            for(int k = 0; k < 3; k++){
+                Ficha* proxy = this->tablero->getTData(x,y,z);
+                if(proxy->getTipo() == TESORO){
+                    cout <<"Hay un tesoro en la casilla: " << x << ',' << y << ',' << z << '\n' << endl;
+                } 
+            }
+        }
+    }
     
-    int realX = x - casillaX;   //resta la coordenada actual con el borde del tablero
-    int realY = y - casillaY;
-    int realZ = z - casillaZ;
-
-    if((realX >= 3) && (realY >= 3) && (realZ >= 3)){
-        //incluyendo hasta el borde.
-        Ficha* casillaActual = tablero->getTData(x,y,z);
-        //ver si la condicion es menor o menor o igual
-        for(int i = 0; i < 3; i++){
-            for(int j = 0; j < 3; j++){
-                for(int k = 0; k < 3; k++){
-                    if((casillaActual->getTipo() == TESORO) && (!casillaActual->estaProtegido())){
-                        cout << "HAY UN TESORO EN LAS COORDENADAS: " << x << " " << y << " " << z << " " << endl;
-                    }
-                }
-            }
-        }
-    }
-    else if (realX < 3){
-        Ficha* casillaActual = tablero->getTData(x,y,z);
-        //ver si la condicion es menor o menor o igual
-        for(int i = 0; i < 2; i++){
-            for(int j = 0; j < 3; j++){
-                for(int k = 0; k < 3; k++){
-                    if((casillaActual->getTipo() == TESORO) && (!casillaActual->estaProtegido())){
-                        cout << "HAY UN TESORO EN LAS COORDENADAS: " << x << " " << y << " " << z << " " << endl;
-                    }
-                }
-            }
-        }
-    }
-    else if (realY < 2){
-        Ficha* casillaActual = tablero->getTData(x,y,z);
-        //ver si la condicion es menor o menor o igual
-        for(int i = 0; i < 3; i++){
-            for(int j = 0; j < 2; j++){
-                for(int k = 0; k < 3; k++){
-                    if((casillaActual->getTipo() == TESORO) && (!casillaActual->estaProtegido())){
-                        cout << "HAY UN TESORO EN LAS COORDENADAS: " << x << " " << y << " " << z << " " << endl;
-                    }
-                }
-            }
-        }
-    }
-    else if (realZ < 3){
-        Ficha* casillaActual = tablero->getTData(x,y,z);
-        //ver si la condicion es menor o menor o igual
-        for(int i = 0; i < 3; i++){
-            for(int j = 0; j < 3; j++){
-                for(int k = 0; k < 3; k++){
-                    if((casillaActual->getTipo() == TESORO) && (!casillaActual->estaProtegido())){
-                        cout << "HAY UN TESORO EN LAS COORDENADAS: " << x << " " << y << " " << z << " " << endl;
-                    }
-                }
-            }
+}
+//Hace radar sobre todos los jugadores menos quien la usa.
+void Juego::usoRadar(Jugador* p){
+    int len = jugadores->getSize();
+    string name = p->getNombre();
+    string aux;
+    for(int x = 0; x < len; x++){
+        Jugador* currentPlayer = this->jugadores->getLData(x);  //se almacena la data de ese jugador.
+        aux = currentPlayer->getNombre();
+        if(name != aux){
+            radar(currentPlayer);
         }
     }
 }
-
+/*END.
+*/
 //las coordenadas que se ingresan son donde se piensa colocar el tesoro.
 void Juego::duplicarTesoro(int x, int y, int z, Jugador* jugador){
     while((this->tablero->getTData(x,y,z)->getTipo() == TESORO)){
@@ -219,7 +209,8 @@ void Juego::duplicarTesoro(int x, int y, int z, Jugador* jugador){
     Coordenada* pos = new Coordenada(x,y,z);
     colocarFicha(TESORO, pos);
     Ficha* nFicha = this->tablero->getTData(x,y,z);
-    jugador->getListaFichas()->add(nFicha);
+    //HACER FUNCION EN JUGADOR PARA ANADIR LA FICHA.
+    //jugador->getListaFichas()->add(nFicha); //---> Aca esta el problema, probablemente.
     //ver como se incrementa el numero de tesoros y si hay confilicto con mas de 4 
 }
 
@@ -228,26 +219,27 @@ void Juego::palaTunel(int x, int y, int z, Jugador* jugador){
     Ficha* fichaPos = this->tablero->getTData(x,y,z);
     while((fichaPos->getTipo() != TESORO) || (fichaPos->getTipo() != ESPIA) || fichaPos->getTipo() != MINA){
         cout<<"Error, ficha no valida para movimiento, intente con otra ficha.\n" << endl;
-        cout<<"Ingrese las coordenadas de la ficha deseada en formato x, y, z\n" << endl;
+        cout<<"Ingrese las coordenadas de la ficha deseada en formato x, y, z: " << endl;
         cin >> x >> y >> z;
         fichaPos = this->tablero->getTData(x,y,z);
     }
     int i, j, k;
     cout<< "Ingrese la coordenada donde desea mover la ficha en formato x, y ,z\n" << endl;
     cin >> i >> j >> k;
-    ///preguntar
     Ficha* vacio = this->tablero->getTData(i,j,k);
     while(vacio->getTipo() != VACIO){
         cout << "Error! esa casilla no esta vacia, por favor ingrese otras coordenadas,\n" << endl;
         cin >> i >> j >> k;
         vacio = this->tablero->getTData(i,j,k);
     }
+    Coordenada* oldPLace = new Coordenada(x,y,z);
     Coordenada* pos = new Coordenada(i,j,k);
     //como se mueve la ficha, supongo que no hace falta eliminarla del tablero.
     colocarFicha(fichaPos->getTipo(), pos);
     //actualiza la ficha a vacio
-    //this->tablero->setTData(x,y,z,vacio);
-
+    fichaPos->setTipo(VACIO);
+    //Problema solucionado: actualizacion del tablero a vacio
+    colocarFicha(VACIO,oldPLace);   //<----------- aca se puede dar una parte del bug.
     //hara falta revisar las interacciones si un tesoro va donde un enemigo, espia en espia, mina en tesoro, etc...
 }
 
@@ -257,11 +249,30 @@ void Juego::agentesDurmientes(Jugador* jugador){
     int lenJugadores = jugadores->getSize();
     for(int x = 0; x < lenJugadores - 1; x++){
         Jugador* jugadorActual = this->jugadores->getLData(x);
-        //Lista<Ficha*>* fichas = jugadorActual->getListaFichas();
         aux = jugadorActual->getNombre();
         if(name != aux){
             jugadorActual->getListaFichas()->getLData(x)->setTurnosInactiva(1);  
         }
+    }
+}
+
+void Juego::racimoBomba(Jugador* jugador){
+    Ficha* aux;
+    int x, y, z;
+    for(int mina = 0; mina < 5; mina++){
+        cout<<"Ingrese la posicion donde desea colocal la mina (en formato x,y,z): " << endl;
+        cin >> x >> y >> z;
+        Ficha* prob = this->tablero->getTData(x,y,z);
+        while((prob->getTipo() != VACIO) || (!tablero->inRange(x,y,z))){
+            cout<<"Error! esa casilla esta ocupada o es invalida, intente otra: " << endl;
+            cin >> x >> y >> z;
+            prob = this->tablero->getTData(x,y,z);
+        }
+        Coordenada* pos = new Coordenada(x,y,z);
+        colocarFicha(MINA, pos);
+        Ficha* nMina = this->tablero->getTDataC(pos);
+        //HACER FUNCION EN JUGADOR PARA ANADIR LAS FICHAS
+        //jugador->getListaFichas()->add(nMina);          //probablemente aca tambien haya un problema.
     }
 }
 
@@ -615,7 +626,7 @@ void Juego::limpiarArchivo(Jugador* jugadorActual){
     fclose(archivo);
 }
 
-void Juego::sacarFoto(){
+/*void Juego::sacarFoto(){
     Jugador* jugadorActual = this->jugadores->getLData(this->jugadores->getIter());
     Coordenada* imgSize = new Coordenada(this->tablero->getTamanioX() * 100, this->tablero->getTamanioY() * 70, 0);
     BMP* imagen = new BMP();
@@ -625,14 +636,14 @@ void Juego::sacarFoto(){
     imagen->WriteToFile(fileName.c_str());
     delete imagen;
     delete imgSize;
-}
+}*/
 
 void Juego::jugarTurno(){
     int res;
     for(int i = 0; i < this->jugadores->getSize(); i++){
         this->jugadores->goTo(i);
         if(this->estadoPartida == 0 && this->jugadores->getLData(i)->getTesorosRestantes() > 0){
-            this->sacarFoto();
+            //this->sacarFoto();
             this->limpiarArchivo(this->jugadores->getLData(i));
             this->mostrarTablero();
             this->recibirCarta(&res);
