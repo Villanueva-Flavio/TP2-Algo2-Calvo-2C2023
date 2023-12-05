@@ -8,8 +8,7 @@
 
 using namespace std;
 
-string IntToString(int a)
-{
+string IntToString(int a){
     ostringstream temp;
     temp << a;
     return temp.str();

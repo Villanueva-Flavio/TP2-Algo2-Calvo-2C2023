@@ -1,4 +1,4 @@
-#include <sstream>
+/* #include <sstream>
 #include <string>
 #include <iostream>
 #include "Tablero.h"
@@ -193,4 +193,4 @@ void imprimirBMP(Coordenada* imgSize, BMP* image, Tablero<Ficha*>* tablero, int 
         }
     }
     delete pixelPos, matrixPos, matrixPosDif, pixelOffset, pixel;
-}
+} */
