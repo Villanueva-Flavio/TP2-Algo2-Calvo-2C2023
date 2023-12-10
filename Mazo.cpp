@@ -36,7 +36,7 @@ Carta* Mazo::obtenerCarta(TipoCartas tipo){
         }
         throw tipo;
     } catch (TipoCartas e) {
-        std::cout << "CardNotFoundException ("<< e <<")" << std::endl;
+        std::cout << "CardNotFoundException ("<< this->tipoDeCartaGlobal(e) <<")" << std::endl;
     }
     return NULL;
 }

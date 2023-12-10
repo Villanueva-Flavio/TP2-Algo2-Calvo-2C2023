@@ -10,7 +10,6 @@ class Jugador{
         std::string nombre;
         Mazo* mazo;
         Lista<Ficha*>* fichas;
-        //Lista<Coordenada*>* 
     
     public:
         Jugador(std::string nombre);

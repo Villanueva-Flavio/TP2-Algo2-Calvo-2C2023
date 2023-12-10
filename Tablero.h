@@ -2,6 +2,7 @@
 #define __TABLERO_H__
 #include "Lista.h"
 #include "Coordenada.h"
+#include "Ficha.h"
 
 template <class T> class Tablero {
     private:
@@ -71,8 +72,8 @@ template <class T> Tablero<T>::Tablero(int i, int j, int k){
         for(int n = 0; n < j; n++){
             Lista<T>* fila = new Lista<T>();
             for(int m = 0; m < k; m++){
-                T* celda = new T();
-                fila->add(*celda);
+                Ficha* ficha = new Ficha(VACIO, Coordenada(l, n, m), -1, 0, false);
+                fila->add(ficha);
             }
             plano->add(fila);
         }

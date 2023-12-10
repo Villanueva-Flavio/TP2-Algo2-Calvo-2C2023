@@ -74,11 +74,10 @@ string Juego::preguntarNombre(){
 
 void Juego::cargarJugadores(int jugadores){
     for(int i = 0; i < jugadores; i ++){
+        cout << "Jugador " << i + 1 << endl;
         std::string nombre = this->preguntarNombre();
         this->jugadores->add(new Jugador(nombre));
-        for(int j = 0; j < 4; j ++){
-            this->cargarTesoros();
-        }
+        this->cargarTesoros();
     }
 }
 
@@ -95,6 +94,7 @@ void Juego::cargarTesoros(){
             cout << endl;
         }
         this->tablero->getTDataC(aux)->setTipo(TESORO);
+        this->jugadores->getLData(this->jugadores->getSize() -1)->getListaFichas()->add(this->tablero->getTDataC(aux));
     }
 }
 
@@ -347,7 +347,7 @@ void Juego::recibirCarta(int* res){
     TipoCartas rng = (TipoCartas) (rand() % 6);
     *res = (int)rng;
     Jugador* jugadorActual = this->jugadores->getLData(this->jugadores->getIter());
-    jugadorActual->getMazo()->agregarCarta(rng);
+    jugadorActual->getMazo()->agregarCarta(rng); // Esto no funciona
     cout << "Se ha recibido la carta: " << jugadorActual->getMazo()->obtenerCarta(rng)->getTipo() << endl;
 }
 
