@@ -346,9 +346,9 @@ void Juego::handlerMazo(){
 void Juego::recibirCarta(int* res){
     TipoCartas rng = (TipoCartas) (rand() % 6);
     *res = (int)rng;
-    Jugador* jugadorActual = this->jugadores->getLData(this->jugadores->getIter());
-    jugadorActual->getMazo()->agregarCarta(rng); // Esto no funciona
-    cout << "Se ha recibido la carta: " << jugadorActual->getMazo()->obtenerCarta(rng)->getTipo() << endl;
+    Mazo* mazoActual = this->jugadores->getLData(this->jugadores->getIter())->getMazo();
+    mazoActual->agregarCarta(rng);
+    cout << "Se ha recibido la carta: " << mazoActual->tipoDeCartaGlobal(mazoActual->obtenerCarta(rng)->getTipo()) << endl;
 }
 
 void Juego::mostrarTablero(){

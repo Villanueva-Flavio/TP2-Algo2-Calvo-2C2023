@@ -13,10 +13,9 @@ void Mazo::agregarCarta(TipoCartas tipo){
     for(int i = 0; i < this->mazo->getSize(); i++){
         if(this->mazo->getLData(i)->getTipo() == tipo){
             this->mazo->getLData(i)->agregarCarta();
-        } else {
-            this->mazo->add(new Carta(tipo));
         }
     }
+    this->mazo->add(new Carta(tipo));
 }
 
 void Mazo::removerCarta(TipoCartas tipo){
