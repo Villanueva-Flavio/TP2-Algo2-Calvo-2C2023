@@ -88,13 +88,13 @@ void Juego::cargarTesoros(){
         cout << "Ingrese la coordenada en el formato X Y Z del tesoro: ";
         cin >> *aux;
         cout << endl;
-        while(!this->validarLimitePosicion(aux)){
+        while(!this->validarLimitePosicion(aux) || !this->coordenadaValida(aux)){
             cout << "Coordenada invalida, ingrese otra: ";
             cin >> *aux;
             cout << endl;
         }
         this->tablero->getTDataC(aux)->setTipo(TESORO);
-        this->jugadores->getLData(this->jugadores->getSize() -1)->getListaFichas()->add(this->tablero->getTDataC(aux));
+        this->jugadores->getLData(this->jugadores->getIter())->getListaFichas()->add(this->tablero->getTDataC(aux));
     }
 }
 
@@ -270,8 +270,6 @@ void Juego::racimoBomba(Jugador* jugador){
         Coordenada* pos = new Coordenada(x,y,z);
         colocarFicha(MINA, pos);
         Ficha* nMina = this->tablero->getTDataC(pos);
-        //HACER FUNCION EN JUGADOR PARA ANADIR LAS FICHAS
-        //jugador->getListaFichas()->add(nMina);          //probablemente aca tambien haya un problema.
     }
 }
 
@@ -491,23 +489,14 @@ void Juego::handlerEspia(TipoFichas tipoDest, Coordenada* aux, bool* loopCheck){
 }
 
 void Juego::imprimirFichas(){
-    int i = 0;
-    while(i < this->jugadores->getLData(this->jugadores->getIter())->getTesorosRestantes()){
-        cout << "Ficha " << i+1 << ": ";
-        for(int j = 0; j < this->tablero->getTamanioX(); j++){
-            for(int k = 0; k < this->tablero->getTamanioY(); k++){
-                for(int l = 0; l < this->tablero->getTamanioZ(); l++){
-                    if(this->tablero->getTData(j, k, l)->getTipo() == TESORO && this->tablero->getTData(j, k, l)->getJugadorOwner() == this->jugadores->getIter()){
-                        cout << j << " " << k << " " << l << endl;
-                        j = this->tablero->getTamanioX();
-                        k = this->tablero->getTamanioY();
-                        l = this->tablero->getTamanioZ();
-                        i++;
-                    }
-                }
-            }
-        }
+    Jugador* jugadorActual = this->jugadores->getLData(this->jugadores->getIter());
+    string alerta;
+    for(int i = 0; i < jugadorActual->getLenFichas(); i++){
+        Ficha* ficha = jugadorActual->getListaFichas()->getLData(i);
+        string tipo = this->getFichaTipoGlobal(ficha->getTipo());
+        cout << "Ficha " << i + 1 << ": " << tipo << " en " << ficha->getPosicion() << endl;
     }
+
 }
 
 bool Juego::validarNumeroFicha(int index){
