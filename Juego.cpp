@@ -511,24 +511,27 @@ bool Juego::distanciaContigua(Coordenada* c1, Coordenada* c2){
 }
 
 void Juego::seleccionarTesoro(int* fichaSeleccionada, Coordenada* auxSrc, Coordenada* auxDest){
+    Coordenada* aux;
     this->imprimirFichas();
     cout << "Ingrese el numero de la ficha que desea seleccionar: ";
     cin >> *fichaSeleccionada;
+    (*fichaSeleccionada) --;
     while(!this->validarNumeroFicha(*fichaSeleccionada)){
         cout << "Numero de ficha invalido, ingrese otro: ";
         cin >> *fichaSeleccionada;
+        (*fichaSeleccionada) --;
     }
-    preguntarCoordenada(auxSrc);
+    aux = new Coordenada(this->jugadores->getLData(this->jugadores->getIter())->getListaFichas()->getLData(*fichaSeleccionada)->getPosicion());
     preguntarCoordenada(auxDest);
-    while(!this->distanciaContigua(auxSrc, auxDest)){
+    while(!distanciaContigua(aux, auxDest)){
         cout << "Las coordenadas no son contiguas, ingrese otras: ";
         preguntarCoordenada(auxDest);
     }
 }
 
 void Juego::handlerTesoro(bool* loopCheck){
-    Coordenada* auxSrc = new Coordenada(0, 0, 0);
     Coordenada* auxDest = new Coordenada(0, 0, 0);
+    Coordenada* auxSrc;
     int fichaSeleccionada = 0;
     this->seleccionarTesoro(&fichaSeleccionada, auxSrc, auxDest);
     int jugadorActual = this->jugadores->getIter();
@@ -580,6 +583,7 @@ void Juego::handlerCoordenadaFicha(Coordenada* aux, TipoFichas tipoSrc){
 }
 
 void Juego::handlerFicha(TipoFichas tipoSrc){
+    system("clear");
     Coordenada* aux = new Coordenada(0, 0, 0);
     this->handlerCoordenadaFicha(aux, tipoSrc);
     TipoFichas tipoDest = this->tablero->getTDataC(aux)->getTipo();
@@ -597,8 +601,11 @@ void Juego::handlerFicha(TipoFichas tipoSrc){
                 handlerTesoro(&loopCheck);
                 break;
         }
+        if(!loopCheck){
+            this->handlerCoordenadaFicha(aux, tipoSrc);
+            tipoDest = this->tablero->getTDataC(aux)->getTipo();
+        }
     }
-    delete aux;
 }
 
 void Juego::mostrarAlertas(string alerta, Jugador* jugadorActual){

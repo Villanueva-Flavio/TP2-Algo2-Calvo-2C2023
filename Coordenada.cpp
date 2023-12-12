@@ -7,6 +7,12 @@ Coordenada::Coordenada(int x, int y, int z){
     this->z = z;
 }
 
+Coordenada::Coordenada(const Coordenada& c){
+    this->x = c.x;
+    this->y = c.y;
+    this->z = c.z;
+}
+
 int Coordenada::getX(){
     return this->x;
 }

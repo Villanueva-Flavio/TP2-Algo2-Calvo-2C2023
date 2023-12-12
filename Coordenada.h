@@ -10,6 +10,7 @@ class Coordenada{
 
     public:
     Coordenada(int x, int y, int z);
+    Coordenada(const Coordenada& c);
 
     int getX();
     int getY();
