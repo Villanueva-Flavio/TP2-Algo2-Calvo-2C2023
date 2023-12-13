@@ -1,4 +1,5 @@
 #include "Mazo.h"
+#include <cstdlib>
 using namespace std;
 
 Mazo::Mazo(){

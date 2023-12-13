@@ -87,7 +87,7 @@ void Juego::cargarJugadores(int jugadores){
 void Juego::cargarTesoros(){
     Coordenada* aux = new Coordenada(0, 0, 0);
     cout << "Jugador " << this->jugadores->getLData(this->jugadores->getSize() - 1)->getNombre() << endl;
-        cout << "Tamaño de mapa: 1 a " << this->tablero->getTamanioX() << endl;
+        cout << COLOR_VERDE_NEGRITA << "Tamaño de mapa: 1 a " << this->tablero->getTamanioX() << RES_COLOR << endl;
     for(int i = 0; i < 4; i++){    
         cout << "Ingrese la coordenada en el formato X Y Z del tesoro ( " << i+1 << "/4 ): ";
         cin >> *aux;
@@ -130,7 +130,7 @@ bool Juego::validarDecisionCarta(string decision){
 
 void Juego::preguntarDecisionCarta(Decision* decision){
     string aux;
-    cout << "Desea jugar la carta? (si/no/salir): ";
+    cout << COLOR_VERDE << "Desea jugar la carta? (si/no/salir): " << RES_COLOR;
     cin >> aux;
     while(!this->validarDecisionCarta(aux)){
         cout << COLOR_ROJO_NEGRITA << "Decision invalida, ingrese otra: " << RES_COLOR;
@@ -144,6 +144,7 @@ void Juego::preguntarDecisionCarta(Decision* decision){
         *decision = SALIR;
         this->estadoPartida = -1;
     }
+    system("clear");
 }
 
 /*=============================================================CARTAS============================================================================================*/
@@ -380,7 +381,7 @@ void Juego::checkEstadoPartida(){
 }
 
 void Juego::preguntarCoordenada(Coordenada* pos){
-    cout << "Tamaño de mapa: 1 a " << this->tablero->getTamanioX() << endl;
+    cout << COLOR_VERDE_NEGRITA << "Tamaño de mapa: 1 a " << this->tablero->getTamanioX() << RES_COLOR << endl;
     cout << "Ingrese la coordenada en el formato X Y Z: ";
     cin >> *pos;
     (*pos) = (*pos) - 1;
@@ -567,7 +568,7 @@ void Juego::handlerTesoro(bool* loopCheck){
 }
 
 void Juego::handlerCoordenadaFicha(Coordenada* aux, TipoFichas tipoSrc){
-    cout << "Ficha: " << this->getFichaTipoGlobal(tipoSrc) << endl;
+    cout << "Ficha: " << COLOR_VERDE_NEGRITA << this->getFichaTipoGlobal(tipoSrc) << RES_COLOR << endl;
     if(tipoSrc != TESORO){
         this->preguntarCoordenada(aux);
     }
