@@ -1,7 +1,9 @@
+#ifndef __JUEGO_H__
+#define __JUEGO_H__
+
 #include <string>
 #include "Tablero.h"
 #include "Jugador.h"
-
 
 class Juego{
 public:
@@ -89,3 +91,5 @@ añadir los nuevos tipos de cartas al enum TipoCartas y modificar el método apl
 
 Espero que esto te ayude a implementar las nuevas cartas. ¡Buena suerte con tu proyecto! 😊
 */
+
+#endif

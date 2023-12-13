@@ -1,10 +1,10 @@
 #include "Juego.h"
+#include "Renderizador.h"
 #include <iostream>
 #include <string>
 #include <stdlib.h>
 #include <stdio.h>
 #include <sstream>
-#include "Renderizador.h"
 
 using namespace std;
 
@@ -610,12 +610,13 @@ void Juego::limpiarArchivo(Jugador* jugadorActual){
     fclose(archivo);
 }
 
+
 void Juego::sacarFoto(){
     Jugador* jugadorActual = this->jugadores->getLData(this->jugadores->getIter());
     Coordenada* imgSize = new Coordenada(this->tablero->getTamanioX() * 100, this->tablero->getTamanioY() * 70, 0);
     BMP* imagen = new BMP();
     imagen->SetSize(imgSize->getX(), imgSize->getY());
-    imprimirBMP(*imgSize, imagen, this->tablero, this->jugadores->getIter());
+    imprimirBMP(imgSize, imagen, this->tablero, this->jugadores->getIter());
     string fileName = "Tablero_" + jugadorActual->getNombre() + ".bmp";
     imagen->WriteToFile(fileName.c_str());
     delete imagen;
