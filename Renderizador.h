@@ -90,6 +90,7 @@ bool pixelSizeEnRango(Coordenada* pixelPos, Coordenada* imgSize, int pixelSize){
 
 void pintarEntidad(BMP* image, Coordenada* pixelPos, RGBApixel color, Coordenada* imgSize){
     int pixelSize = pixelSizeGet(color);
+    std::cout << (int)color.Red << ", " << (int)color.Green << ", " << (int)color.Blue << std::endl; // REMINDER
     for(int i = 0; i < pixelSize; i++){
         for(int j = 0; j < pixelSize; j++){
             if(pixelSizeEnRango(pixelPos, imgSize, pixelSize) && !coloresSonIguales(color, C_BLANCO)){
@@ -151,6 +152,11 @@ bool capaExiste(TipoTerreno capaCelda){
 
 RGBApixel getColor(Ficha* ficha, bool esFicha){
     RGBApixel colorAux = (esFicha)? C_ESPIA : C_BLANCO;
+    if(esFicha){
+        std::cout << "True" << std::endl;
+    } else {
+        std::cout << "False" << std::endl;
+    }
     if(coloresSonIguales(colorAux, C_BLANCO)){
         colorAux = (capaExiste(ficha->getTipoTerreno()))? codigoColorSegunCelda(ficha->getTipoTerreno()) : colorAux;
     }
@@ -189,7 +195,7 @@ void imprimirBMP(Coordenada* imgSize, BMP* image, Tablero<Ficha*>* tablero, int 
                     aplicarProyeccionIsometrica(pixel, lado);
                     pixelPos->setX(static_cast<int>((pixel->getX()) * 20 + pixelOffset->getX())); 
                     pixelPos->setY(static_cast<int>((pixel->getY()) * 20 + pixelOffset->getY()));
-                    color = getColor(tablero->getTDataC(matrixPos), (tablero->getTDataC(matrixPos)->getJugadorOwner() == jugador && tablero->getTDataC(matrixPos)->getTipo() != MINA));
+                    color = getColor(tablero->getTDataC(matrixPos), (tablero->getTDataC(matrixPos)->getJugadorOwner() == jugador && tablero->getTDataC(matrixPos)->getTipo() != TESORO));
                     pintarEntidad(image, pixelPos, color, imgSize);
                     matrixPos->setZ(matrixPos->getZ() + matrixPosDif->getZ());
                 }
