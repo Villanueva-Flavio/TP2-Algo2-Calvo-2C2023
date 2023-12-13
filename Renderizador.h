@@ -1,7 +1,8 @@
-/* #ifndef __RENDERIZADOR_H__
+#ifndef __RENDERIZADOR_H__
 #define __RENDERIZADOR_H__
 
 #include "Tablero.h"
+#include "Enums.h"
 #include "EasyBMP.h"
 #include "Coordenada.h"
 #include "CoordenadaDouble.h"
@@ -40,4 +41,4 @@ RGBApixel getColor(Ficha* celda);
 
 void imprimirBMP(Coordenada imgSize, BMP* image, Tablero<Ficha*>* tablero, int jugador);
 
-#endif */
+#endif

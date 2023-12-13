@@ -37,14 +37,15 @@ private:
     void preguntarDecisionMazo(Decision* decision);
     void jugarCartaDelMazo();
     void recibirCarta(int* res);
+    void aplicarCarta(TipoCartas tipo);
     void preguntarDecisionCarta(Decision* decision);
     bool validarDecisionCarta(std::string decision);
     void imprimirMazo();
     void blindaje(Jugador* jugador);
     void radar(Jugador* jugador);
     void usoRadar(Jugador* p);
-    void duplicarTesoro(Coordenada* pos, Jugador* jugador);
-    void palaTunel(Coordenada* pos, Jugador* jugador);
+    void duplicarTesoro(Jugador* jugador);
+    void palaTunel(Jugador* jugador);
     void agentesDurmientes(Jugador* jugador);
     void racimoBomba(Jugador* jugador);
     

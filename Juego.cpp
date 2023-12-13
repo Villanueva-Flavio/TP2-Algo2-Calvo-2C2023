@@ -182,16 +182,20 @@ void Juego::usoRadar(Jugador* p){
 /*END.
 */
 //las coordenadas que se ingresan son donde se piensa colocar el tesoro.
-void Juego::duplicarTesoro(Coordenada* pos, Jugador* jugador){
+void Juego::duplicarTesoro(Jugador* jugador){
+    Coordenada* pos = new Coordenada(0,0,0);
     do{
         cout << "Ingrese las coordenadas donde desea colocar el tesoro: ";
         preguntarCoordenada(pos);
     }while(!this->coordenadaValida(pos));
     colocarFicha(TESORO, pos);
+    delete pos;
 }
 
-void Juego::palaTunel(Coordenada* pos, Jugador* jugador){
-    Coordenada* aux = new Coordenada(0,0,0);
+void Juego::palaTunel(Jugador* jugador){
+    Coordenada* pos = new Coordenada(0, 0, 0);
+    Coordenada* aux = new Coordenada(0, 0, 0);
+    this->imprimirFichas();
     do{
         cout << "Ingrese las coordenadas de la ficha que desea mover: ";
         preguntarCoordenada(pos);  
@@ -204,7 +208,7 @@ void Juego::palaTunel(Coordenada* pos, Jugador* jugador){
 
     colocarFichaN(this->tablero->getTDataC(pos)->getTipo(), aux, this->jugadores->getIter());
     colocarFichaN(VACIO, pos, -1);
-    delete aux;
+    delete aux, pos;
 }
 
 void Juego::agentesDurmientes(Jugador* jugador){
@@ -228,11 +232,35 @@ void Juego::racimoBomba(Jugador* jugador){
     }
 }
 
+void Juego::aplicarCarta(TipoCartas tipo){
+    switch(tipo){
+        case BLINDAJE:
+            this->blindaje(this->jugadores->getLData(this->jugadores->getIter()));
+            break;
+        case RADAR:
+            this->usoRadar(this->jugadores->getLData(this->jugadores->getIter()));
+            break;
+        case PARTIR_TESORO:
+            this->duplicarTesoro(this->jugadores->getLData(this->jugadores->getIter()));
+            break;
+        case PALA_PARA_TUNEL:
+            this->palaTunel(this->jugadores->getLData(this->jugadores->getIter()));
+            break;
+        case AGENTES_DURMIENTES:
+            this->agentesDurmientes(this->jugadores->getLData(this->jugadores->getIter()));
+            break;
+        case BOMBA_DE_RACIMO:
+            racimoBomba(this->jugadores->getLData(this->jugadores->getIter()));
+            break;
+    }
+}
+
 void Juego::handlerCarta(int res){
     Decision decision = NINGUNA;
     this->preguntarDecisionCarta(&decision);
     if(decision == SI){
         this->jugadores->getLData(this->jugadores->getIter())->getMazo()->usarCarta((TipoCartas)res);
+        this->aplicarCarta((TipoCartas)res);
     } else if (decision == SALIR){
         this->estadoPartida = -1;
     }
@@ -253,6 +281,7 @@ void Juego::jugarCartaDelMazo(){
     }
     if(aux != -1){
         this->jugadores->getLData(this->jugadores->getIter())->getMazo()->usarCarta((TipoCartas)aux);
+        this->aplicarCarta((TipoCartas)aux);
     }
 }
 
@@ -282,7 +311,6 @@ void Juego::imprimirMazo(){
         alerta = jugador->getMazo()->tipoDeCartaGlobal((TipoCartas)i) + ": " + cantidad + "\n";
         this->mostrarAlertas(alerta, jugador);
     }
-    
 }
 
 void Juego::handlerMazo(){
@@ -582,7 +610,7 @@ void Juego::limpiarArchivo(Jugador* jugadorActual){
     fclose(archivo);
 }
 
-/*void Juego::sacarFoto(){
+void Juego::sacarFoto(){
     Jugador* jugadorActual = this->jugadores->getLData(this->jugadores->getIter());
     Coordenada* imgSize = new Coordenada(this->tablero->getTamanioX() * 100, this->tablero->getTamanioY() * 70, 0);
     BMP* imagen = new BMP();
@@ -592,14 +620,14 @@ void Juego::limpiarArchivo(Jugador* jugadorActual){
     imagen->WriteToFile(fileName.c_str());
     delete imagen;
     delete imgSize;
-}*/
+}
 
 void Juego::jugarTurno(){
     int res;
     for(int i = 0; i < this->jugadores->getSize(); i++){
         this->jugadores->goTo(i);
         if(this->estadoPartida == 0 && this->jugadores->getLData(i)->getTesorosRestantes() > 0){
-            //this->sacarFoto();
+            this->sacarFoto();
             this->limpiarArchivo(this->jugadores->getLData(i));
             this->mostrarTablero();
             this->recibirCarta(&res);

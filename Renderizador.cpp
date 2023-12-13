@@ -1,9 +1,7 @@
-/* #include <sstream>
+#include <sstream>
 #include <string>
 #include <iostream>
-#include "Tablero.h"
 #include "Renderizador.h"
-#include "Enums.h"
 
 //RENDER
 const RGBApixel C_BLANCO = {255, 255, 255, 0};
@@ -193,4 +191,4 @@ void imprimirBMP(Coordenada* imgSize, BMP* image, Tablero<Ficha*>* tablero, int 
         }
     }
     delete pixelPos, matrixPos, matrixPosDif, pixelOffset, pixel;
-} */
+}
