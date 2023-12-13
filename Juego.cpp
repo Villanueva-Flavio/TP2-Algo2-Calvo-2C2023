@@ -332,10 +332,6 @@ void Juego::recibirCarta(int* res){
     cout << "Se ha recibido la carta: " << mazoActual->tipoDeCartaGlobal(mazoActual->obtenerCarta(rng)->getTipo()) << endl;
 }
 
-void Juego::mostrarTablero(){
-    cout << "ToDo tablero" << endl;
-}
-
 string Juego::getFichaTipoGlobal(TipoFichas tipo){
     switch (tipo){
         case MINA:
@@ -630,7 +626,6 @@ void Juego::jugarTurno(){
         if(this->estadoPartida == 0 && this->jugadores->getLData(i)->getTesorosRestantes() > 0){
             this->sacarFoto();
             this->limpiarArchivo(this->jugadores->getLData(i));
-            this->mostrarTablero();
             this->recibirCarta(&res);
             this->handlerCarta(res);
             this->handlerMazo();

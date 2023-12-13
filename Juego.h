@@ -67,7 +67,6 @@ private:
     void handlerTesoro(bool* loopCheck);
     
     //Otro
-    void mostrarTablero();
     void mostrarAlertas(std::string alerta, Jugador* jugadorActual);
     void limpiarArchivo(Jugador* jugadorActual);
     void sacarFoto();
