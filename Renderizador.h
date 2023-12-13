@@ -75,7 +75,7 @@ int pixelSizeGet(RGBApixel color){
            (coloresSonIguales(color, C_INACTIVO))? 7 :
            (coloresSonIguales(color, C_MINA) || coloresSonIguales(color, C_ESPIA))? 4 :
            (coloresSonIguales(color, C_BORDE))? 3 :
-           (coloresSonIguales(color, C_AGUA) || coloresSonIguales(color, C_AGUA_OSCURA) || coloresSonIguales(color, C_VACIO))? 2 :
+           (coloresSonIguales(color, C_AGUA) || coloresSonIguales(color, C_AGUA_OSCURA) || coloresSonIguales(color, C_VACIO))? 1 :
            (coloresSonIguales(color, C_BLANCO))? 0 : 0;
     
 }
@@ -160,7 +160,7 @@ RGBApixel getColor(Ficha* ficha, bool esFicha){
         colorAux = (capaExiste(ficha->getTipoTerreno()))? codigoColorSegunCelda(ficha->getTipoTerreno()) : colorAux;
     }
     return colorAux; */
-    RGBApixel colorAux = C_BLANCO;
+    RGBApixel colorAux = C_VACIO;
     if(esFicha){
         switch(ficha->getTipo()){
             case MINA:
@@ -171,9 +171,6 @@ RGBApixel getColor(Ficha* ficha, bool esFicha){
                 break;
             case ESPIA:
                 colorAux = C_ESPIA;
-                break;
-            case VACIO:
-                colorAux = C_VACIO;
                 break;
             case TESORO_DESENTERRADO:
                 colorAux = C_TESORO;

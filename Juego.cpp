@@ -98,6 +98,7 @@ void Juego::cargarTesoros(){
             (*aux) = (*aux) - 1;
         }
         this->tablero->getTDataC(aux)->setTipo(TESORO);
+        this->tablero->getTDataC(aux)->setJugadorOwner(this->jugadores->getSize() - 1);
         this->jugadores->getLData(this->jugadores->getIter())->getListaFichas()->add(this->tablero->getTDataC(aux));
     }
     system("clear");
@@ -512,7 +513,7 @@ void Juego::seleccionarTesoro(int* fichaSeleccionada, Coordenada* auxSrc, Coorde
     system("clear");
     preguntarCoordenada(auxDest);
     while(!distanciaContigua(aux, auxDest)){
-        cout << "Las coordenadas no son contiguas a: " << aux <<", ingrese otras: ";
+        cout << "Las coordenadas no son contiguas a: " << *aux <<", ingrese otras: ";
         preguntarCoordenada(auxDest);
     }
 }
