@@ -104,6 +104,7 @@ void Juego::cargarTesoros(){
         this->jugadores->getLData(this->jugadores->getIter())->getListaFichas()->add(this->tablero->getTDataC(aux));
     }
     system("clear");
+    delete aux; //REMINDER
 }
 
 bool Juego::validarNombre(string nombre){
@@ -235,6 +236,7 @@ void Juego::racimoBomba(Jugador* jugador){
         }
         colocarFicha(MINA, pos);
     }
+    delete pos; //REMINDER
 }
 
 void Juego::aplicarCarta(TipoCartas tipo){
@@ -519,6 +521,7 @@ void Juego::seleccionarTesoro(int* fichaSeleccionada, Coordenada* auxSrc, Coorde
         cout << COLOR_ROJO_NEGRITA << "Las coordenadas no son contiguas a: " << *aux <<", ingrese otras: " << RES_COLOR;
         preguntarCoordenada(auxDest);
     }
+    delete aux; //REMINDER
 }
 
 void Juego::handlerTesoro(bool* loopCheck){
