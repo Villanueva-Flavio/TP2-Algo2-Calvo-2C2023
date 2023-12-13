@@ -1,0 +1,14 @@
+Blindaje: 1
+
+Radar: 0
+
+Partir tesoro: 0
+
+Agentes durmientes: 0
+
+Pala para tunel: 0
+
+Bomba de racimo: 0
+
+No se puede atacar un tesoro propio
+

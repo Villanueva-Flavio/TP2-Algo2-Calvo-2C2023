@@ -38,15 +38,13 @@ private:
     void jugarCartaDelMazo();
     void recibirCarta(int* res);
     void preguntarDecisionCarta(Decision* decision);
-    void jugarCarta(int index);
     bool validarDecisionCarta(std::string decision);
     void imprimirMazo();
     void blindaje(Jugador* jugador);
-    bool margenTableo(int x, int y, int z);
     void radar(Jugador* jugador);
     void usoRadar(Jugador* p);
-    void duplicarTesoro(int x, int y, int z, Jugador* jugador);
-    void palaTunel(int x, int y, int z, Jugador* jugador);
+    void duplicarTesoro(Coordenada* pos, Jugador* jugador);
+    void palaTunel(Coordenada* pos, Jugador* jugador);
     void agentesDurmientes(Jugador* jugador);
     void racimoBomba(Jugador* jugador);
     

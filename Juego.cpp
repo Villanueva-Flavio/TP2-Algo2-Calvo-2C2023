@@ -77,25 +77,30 @@ void Juego::cargarJugadores(int jugadores){
         cout << "Jugador " << i + 1 << endl;
         std::string nombre = this->preguntarNombre();
         this->jugadores->add(new Jugador(nombre));
+        system("clear");
         this->cargarTesoros();
     }
 }
 
 void Juego::cargarTesoros(){
     Coordenada* aux = new Coordenada(0, 0, 0);
-    for(int i = 0; i < 4; i++){
-        cout << "Jugador " << this->jugadores->getLData(this->jugadores->getSize() - 1)->getNombre() << endl;
-        cout << "Ingrese la coordenada en el formato X Y Z del tesoro: ";
+    cout << "Jugador " << this->jugadores->getLData(this->jugadores->getSize() - 1)->getNombre() << endl;
+        cout << "Tamaño de mapa: 1 a " << this->tablero->getTamanioX() << endl;
+    for(int i = 0; i < 4; i++){    
+        cout << "Ingrese la coordenada en el formato X Y Z del tesoro ( " << i+1 << "/4 ): ";
         cin >> *aux;
         cout << endl;
+        (*aux) = (*aux) - 1;
         while(!this->validarLimitePosicion(aux) || !this->coordenadaValida(aux)){
             cout << "Coordenada invalida, ingrese otra: ";
             cin >> *aux;
             cout << endl;
+            (*aux) = (*aux) - 1;
         }
         this->tablero->getTDataC(aux)->setTipo(TESORO);
         this->jugadores->getLData(this->jugadores->getIter())->getListaFichas()->add(this->tablero->getTDataC(aux));
     }
+    system("clear");
 }
 
 bool Juego::validarNombre(string nombre){
@@ -143,133 +148,83 @@ void Juego::blindaje(Jugador* jugador){
     int len = jugador->getLenFichas();
     for(int x = 0; x < len; x++){
         //suponiendo que solo se almacenen tesoros y espias.
-        Ficha* ficha = jugador->getListaFichas()->getLData(x);
-        ficha->setProtegido(true);
+        jugador->getListaFichas()->getLData(x)->setProtegido(true);
     }
 }
 /*RADAR:
 */
-bool Juego::margenTableo(int x, int y, int z){
-    int i = tablero->getTamanioX();
-    int j = tablero->getTamanioY();
-    int k = tablero->getTamanioZ();
-    int ejeX = x - i;
-    int ejeY = y - j;
-    int ejeZ = z - k;
-    if((ejeX >= 3) && (ejeY >= 3) && (ejeZ >= 3)){
-        return true;
-    }
-    cout <<"Error! el valor minimo posible es (3,3,3)" << '\n' << endl;
-    return false;
-}
 
 //x, y, z son las coordenadas donde se colocara el radar
 void Juego::radar(Jugador* player){
-    int x,y,z;
-    cout <<"Ingrese las coordenadas donde desea poner el radar. Use formato x,y,z"<< '\n' << endl;
-    cin >> x >> y >> z;
-    while((!this->tablero->inRange(x,y,z)) && (this->tablero->getTData(x,y,z)->getTipo() != VACIO) &&(!margenTableo(x,y,z))){
-        cout <<"Coordenada/Casilla invalida.\nIngrese nuevas coordenadas:" << endl;
-        cin >> x >> y >> z;
-    }
+    Coordenada* pos = new Coordenada(0,0,0);
+    preguntarCoordenada(pos);
     for(int i = 0; i < 3; i++){
         for(int j = 0; j < 3; j++){
             for(int k = 0; k < 3; k++){
-                Ficha* proxy = this->tablero->getTData(x,y,z);
-                if(proxy->getTipo() == TESORO){
-                    cout <<"Hay un tesoro en la casilla: " << x << ',' << y << ',' << z << '\n' << endl;
+                Ficha* fichaActual = this->tablero->getTData(i, j, k);
+                if(this->tablero->inRange(i, j, k) && fichaActual->getTipo() != VACIO && fichaActual->getJugadorOwner() != this->jugadores->getIter()){
+                    cout <<"Hay un " << this->getFichaTipoGlobal(fichaActual->getTipo()) << " en la casilla: " << fichaActual->getPosicion() << endl;
                 } 
             }
         }
     }
-    
+    delete pos;
 }
+
 //Hace radar sobre todos los jugadores menos quien la usa.
 void Juego::usoRadar(Jugador* p){
-    int len = jugadores->getSize();
-    string name = p->getNombre();
-    string aux;
-    for(int x = 0; x < len; x++){
-        Jugador* currentPlayer = this->jugadores->getLData(x);  //se almacena la data de ese jugador.
-        aux = currentPlayer->getNombre();
-        if(name != aux){
-            radar(currentPlayer);
+    for(int x = 0; x < jugadores->getSize(); x++){
+        if(p->getNombre() != this->jugadores->getLData(x)->getNombre()){
+            radar(this->jugadores->getLData(x));
         }
     }
 }
 /*END.
 */
 //las coordenadas que se ingresan son donde se piensa colocar el tesoro.
-void Juego::duplicarTesoro(int x, int y, int z, Jugador* jugador){
-    while((this->tablero->getTData(x,y,z)->getTipo() == TESORO)){
-        cout << "Error! hay un tesoro en esa posicion. Ingrese una nueva coordenada.\n" << endl;
-        cin >> x >> y >> z;
-    }
-    Coordenada* pos = new Coordenada(x,y,z);
+void Juego::duplicarTesoro(Coordenada* pos, Jugador* jugador){
+    do{
+        cout << "Ingrese las coordenadas donde desea colocar el tesoro: ";
+        preguntarCoordenada(pos);
+    }while(!this->coordenadaValida(pos));
     colocarFicha(TESORO, pos);
-    Ficha* nFicha = this->tablero->getTData(x,y,z);
-    //HACER FUNCION EN JUGADOR PARA ANADIR LA FICHA.
-    //jugador->getListaFichas()->add(nFicha); //---> Aca esta el problema, probablemente.
-    //ver como se incrementa el numero de tesoros y si hay confilicto con mas de 4 
 }
 
-//x, y, z son las coordenadas de la ficha que se desea mover (solo valido para minas, tesoros, espias)
-void Juego::palaTunel(int x, int y, int z, Jugador* jugador){
-    Ficha* fichaPos = this->tablero->getTData(x,y,z);
-    while((fichaPos->getTipo() != TESORO) || (fichaPos->getTipo() != ESPIA) || fichaPos->getTipo() != MINA){
-        cout<<"Error, ficha no valida para movimiento, intente con otra ficha.\n" << endl;
-        cout<<"Ingrese las coordenadas de la ficha deseada en formato x, y, z: " << endl;
-        cin >> x >> y >> z;
-        fichaPos = this->tablero->getTData(x,y,z);
-    }
-    int i, j, k;
-    cout<< "Ingrese la coordenada donde desea mover la ficha en formato x, y ,z\n" << endl;
-    cin >> i >> j >> k;
-    Ficha* vacio = this->tablero->getTData(i,j,k);
-    while(vacio->getTipo() != VACIO){
-        cout << "Error! esa casilla no esta vacia, por favor ingrese otras coordenadas,\n" << endl;
-        cin >> i >> j >> k;
-        vacio = this->tablero->getTData(i,j,k);
-    }
-    Coordenada* oldPLace = new Coordenada(x,y,z);
-    Coordenada* pos = new Coordenada(i,j,k);
-    //como se mueve la ficha, supongo que no hace falta eliminarla del tablero.
-    colocarFicha(fichaPos->getTipo(), pos);
-    //actualiza la ficha a vacio
-    fichaPos->setTipo(VACIO);
-    //Problema solucionado: actualizacion del tablero a vacio
-    colocarFicha(VACIO,oldPLace);   //<----------- aca se puede dar una parte del bug.
-    //hara falta revisar las interacciones si un tesoro va donde un enemigo, espia en espia, mina en tesoro, etc...
+void Juego::palaTunel(Coordenada* pos, Jugador* jugador){
+    Coordenada* aux = new Coordenada(0,0,0);
+    do{
+        cout << "Ingrese las coordenadas de la ficha que desea mover: ";
+        preguntarCoordenada(pos);  
+    } while(coordenadaValida(pos));
+    
+    do{
+        cout << "Ingrese las coordenadas donde desea colocar la ficha: ";
+        preguntarCoordenada(aux);
+    } while(!coordenadaValida(aux));
+
+    colocarFichaN(this->tablero->getTDataC(pos)->getTipo(), aux, this->jugadores->getIter());
+    colocarFichaN(VACIO, pos, -1);
+    delete aux;
 }
 
 void Juego::agentesDurmientes(Jugador* jugador){
-    string name = jugador->getNombre();
-    string aux;
-    int lenJugadores = jugadores->getSize();
-    for(int x = 0; x < lenJugadores - 1; x++){
-        Jugador* jugadorActual = this->jugadores->getLData(x);
-        aux = jugadorActual->getNombre();
-        if(name != aux){
-            jugadorActual->getListaFichas()->getLData(x)->setTurnosInactiva(1);  
+    for(int x = 0; x < this->jugadores->getSize(); x++){
+        if(jugador->getNombre() != this->jugadores->getLData(x)->getNombre()){
+            this->jugadores->getLData(x)->getListaFichas()->getLData(x)->setTurnosInactiva(1);  
         }
     }
 }
 
 void Juego::racimoBomba(Jugador* jugador){
-    Ficha* aux;
-    int x, y, z;
+    Coordenada* pos = new Coordenada(0, 0, 0);
     for(int mina = 0; mina < 5; mina++){
-        cout<<"Ingrese la posicion donde desea colocal la mina (en formato x,y,z): " << endl;
-        cin >> x >> y >> z;
-        Ficha* prob = this->tablero->getTData(x,y,z);
-        while((prob->getTipo() != VACIO) || (!tablero->inRange(x,y,z))){
-            cout<<"Error! esa casilla esta ocupada o es invalida, intente otra: " << endl;
-            cin >> x >> y >> z;
-            prob = this->tablero->getTData(x,y,z);
+        cout << "Ingrese la posicion donde desea colocar la mina"<< endl;
+        preguntarCoordenada(pos);
+        while((this->tablero->getTDataC(pos)->getTipo() != VACIO) || (!this->validarLimitePosicion(pos))){
+            cout << "Coordenada incorrecta." << endl;
+            preguntarCoordenada(pos);
         }
-        Coordenada* pos = new Coordenada(x,y,z);
         colocarFicha(MINA, pos);
-        Ficha* nMina = this->tablero->getTDataC(pos);
     }
 }
 
@@ -277,28 +232,28 @@ void Juego::handlerCarta(int res){
     Decision decision = NINGUNA;
     this->preguntarDecisionCarta(&decision);
     if(decision == SI){
-        this->jugarCarta(res);
+        this->jugadores->getLData(this->jugadores->getIter())->getMazo()->usarCarta((TipoCartas)res);
     } else if (decision == SALIR){
         this->estadoPartida = -1;
     }
 }
 
-void Juego::jugarCarta(int indice){
-    Mazo* mazo = this->jugadores->getLData(this->jugadores->getIter())->getMazo();
-    TipoCartas tipo = mazo->obtenerMazo()->getLData(indice)->getTipo();
-    mazo->usarCarta(tipo);
-}
-
 void Juego::jugarCartaDelMazo(){
+    system("clear");
     int index = this->jugadores->getLData(this->jugadores->getIter())->getMazo()->obtenerMazo()->getSize();
     int aux = 0;
-    cout << "Ingrese el numero de la carta que desea jugar: ";
+    cout << "Ingrese el numero de la carta que desea jugar o 0 si no desea ninguna: ";
     cin >> aux;
-    while(aux > index || aux < 0){
+    aux--;
+    cout << "Elegiste " << aux << "Con index: " << index << endl;
+    while(aux >= index || aux < -1){
         cout << "Numero de carta invalido, ingrese otro: ";
         cin >> aux;
+        aux--;
     }
-    this->jugarCarta(aux);
+    if(aux != -1){
+        this->jugadores->getLData(this->jugadores->getIter())->getMazo()->usarCarta((TipoCartas)aux);
+    }
 }
 
 
@@ -393,11 +348,14 @@ void Juego::checkEstadoPartida(){
 }
 
 void Juego::preguntarCoordenada(Coordenada* pos){
+    cout << "Tamaño de mapa: 1 a " << this->tablero->getTamanioX() << endl;
     cout << "Ingrese la coordenada en el formato X Y Z: ";
     cin >> *pos;
+    (*pos) = (*pos) - 1;
     while(!this->validarLimitePosicion(pos)){
         cout << "Coordenada invalida, ingrese otra: ";
         cin >> *pos;
+        (*pos) = (*pos) - 1;
     }
 }
 
@@ -494,13 +452,13 @@ void Juego::imprimirFichas(){
     for(int i = 0; i < jugadorActual->getLenFichas(); i++){
         Ficha* ficha = jugadorActual->getListaFichas()->getLData(i);
         string tipo = this->getFichaTipoGlobal(ficha->getTipo());
-        cout << "Ficha " << i + 1 << ": " << tipo << " en " << ficha->getPosicion() << endl;
+        cout << "Ficha " << i + 1 << ": " << tipo << " en " << ficha->getPosicion() + 1 << endl;
     }
 
 }
 
 bool Juego::validarNumeroFicha(int index){
-    return index > 0 && index <= this->jugadores->getLData(this->jugadores->getIter())->getTesorosRestantes();
+    return index > 0 && index < this->jugadores->getLData(this->jugadores->getIter())->getTesorosRestantes();
 }
 
 bool Juego::distanciaContigua(Coordenada* c1, Coordenada* c2){
@@ -522,9 +480,10 @@ void Juego::seleccionarTesoro(int* fichaSeleccionada, Coordenada* auxSrc, Coorde
         (*fichaSeleccionada) --;
     }
     aux = new Coordenada(this->jugadores->getLData(this->jugadores->getIter())->getListaFichas()->getLData(*fichaSeleccionada)->getPosicion());
+    system("clear");
     preguntarCoordenada(auxDest);
     while(!distanciaContigua(aux, auxDest)){
-        cout << "Las coordenadas no son contiguas, ingrese otras: ";
+        cout << "Las coordenadas no son contiguas a: " << aux <<", ingrese otras: ";
         preguntarCoordenada(auxDest);
     }
 }
@@ -602,6 +561,8 @@ void Juego::handlerFicha(TipoFichas tipoSrc){
                 break;
         }
         if(!loopCheck){
+            system("clear");
+            cout << "Reintentá nuevamente" << endl;
             this->handlerCoordenadaFicha(aux, tipoSrc);
             tipoDest = this->tablero->getTDataC(aux)->getTipo();
         }

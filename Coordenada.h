@@ -26,7 +26,8 @@ class Coordenada{
     friend std::istream& operator>>(std::istream& is, Coordenada& c);
     friend bool operator==(const Coordenada& c1, const Coordenada& c2);
     friend bool operator!=(const Coordenada& c1, const Coordenada& c2);
-
+    friend Coordenada operator-(const Coordenada& c1, int i);
+    friend Coordenada operator+(const Coordenada& c1, int i);
 };
 
 #endif

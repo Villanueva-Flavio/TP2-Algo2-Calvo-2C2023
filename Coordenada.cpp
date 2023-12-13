@@ -64,3 +64,13 @@ bool operator==(const Coordenada& c1, const Coordenada& c2){
 bool operator!=(const Coordenada& c1, const Coordenada& c2){
     return !(c1 == c2);
 }
+
+Coordenada operator-(const Coordenada& c1, int i){
+    Coordenada aux(c1.x - i, c1.y - i, c1.z - i);
+    return aux;
+}
+
+Coordenada operator+(const Coordenada& c1, int i){
+    Coordenada aux(c1.x + i, c1.y + i, c1.z + i);
+    return aux;
+}

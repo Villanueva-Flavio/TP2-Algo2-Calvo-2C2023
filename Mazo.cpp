@@ -12,7 +12,7 @@ Mazo::~Mazo(){
 void Mazo::agregarCarta(TipoCartas tipo){
     for(int i = 0; i < this->mazo->getSize(); i++){
         if(this->mazo->getLData(i)->getTipo() == tipo){
-            this->mazo->getLData(i)->agregarCarta();
+            this->mazo->add(new Carta(tipo));
         }
     }
     this->mazo->add(new Carta(tipo));
@@ -36,8 +36,8 @@ Carta* Mazo::obtenerCarta(TipoCartas tipo){
         throw tipo;
     } catch (TipoCartas e) {
         std::cout << "CardNotFoundException ("<< this->tipoDeCartaGlobal(e) <<")" << std::endl;
+        exit(1);
     }
-    return NULL;
 }
 
 bool Mazo::estaVacio(){
