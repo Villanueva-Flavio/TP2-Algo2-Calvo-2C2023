@@ -30,6 +30,7 @@ const RGBApixel C_INACTIVO = {12, 92, 232, 0};
 const RGBApixel C_MINA = {50, 50, 50, 50};
 const RGBApixel C_ESPIA = {201, 41, 207, 0};
 const RGBApixel C_TESORO = {207, 174, 41, 0};
+const RGBApixel C_VACIO = {50, 50, 50, 0};
 
 double gradosARadianes(double grados){
     return grados * 3.14159 / 180.0;
@@ -70,11 +71,13 @@ bool pixelEnRango(int px, int py, Coordenada* imgSize){
 
 
 int pixelSizeGet(RGBApixel color){
-    int resultado = (coloresSonIguales(color, C_AGUA))? 2:8;
-    resultado = (coloresSonIguales(color, C_INACTIVO))? 7:resultado;
-    resultado = (coloresSonIguales(color, C_AGUA_OSCURA) || coloresSonIguales(color, C_BORDE) || coloresSonIguales(color, C_MINA))? 3:resultado;
-    resultado = (coloresSonIguales(color, C_ARENA) || coloresSonIguales(color, C_ARENA_OSCURA) || coloresSonIguales(color, C_TIERRA) || coloresSonIguales(color, C_TIERRA_OSCURA) || coloresSonIguales(color, C_PASTO))? 6:resultado;
-    return resultado;
+    return (coloresSonIguales(color, C_TESORO) || coloresSonIguales(color, C_ARENA) || coloresSonIguales(color, C_ARENA_OSCURA) || coloresSonIguales(color, C_TIERRA) || coloresSonIguales(color, C_TIERRA_OSCURA) || coloresSonIguales(color, C_PASTO) || coloresSonIguales(color, C_PASTO_OSCURO))? 5 :
+           (coloresSonIguales(color, C_INACTIVO))? 7 :
+           (coloresSonIguales(color, C_MINA) || coloresSonIguales(color, C_ESPIA))? 4 :
+           (coloresSonIguales(color, C_BORDE))? 3 :
+           (coloresSonIguales(color, C_AGUA) || coloresSonIguales(color, C_AGUA_OSCURA) || coloresSonIguales(color, C_VACIO))? 2 :
+           (coloresSonIguales(color, C_BLANCO))? 0 : 0;
+    
 }
 
 bool pixelSizeEnRango(Coordenada* pixelPos, Coordenada* imgSize, int pixelSize){
@@ -90,14 +93,13 @@ bool pixelSizeEnRango(Coordenada* pixelPos, Coordenada* imgSize, int pixelSize){
 
 void pintarEntidad(BMP* image, Coordenada* pixelPos, RGBApixel color, Coordenada* imgSize){
     int pixelSize = pixelSizeGet(color);
-    std::cout << (int)color.Red << ", " << (int)color.Green << ", " << (int)color.Blue << std::endl; // REMINDER
     for(int i = 0; i < pixelSize; i++){
         for(int j = 0; j < pixelSize; j++){
             if(pixelSizeEnRango(pixelPos, imgSize, pixelSize) && !coloresSonIguales(color, C_BLANCO)){
-                    image->SetPixel(pixelPos->getX() + i, pixelPos->getY() + j, color);
-                    image->SetPixel(pixelPos->getX() - i, pixelPos->getY() + j, color);
-                    image->SetPixel(pixelPos->getX() + i, pixelPos->getY() - j, color);
-                    image->SetPixel(pixelPos->getX() - i, pixelPos->getY() - j, color);
+                image->SetPixel(pixelPos->getX() + i, pixelPos->getY() + j, color);
+                image->SetPixel(pixelPos->getX() - i, pixelPos->getY() + j, color);
+                image->SetPixel(pixelPos->getX() + i, pixelPos->getY() - j, color);
+                image->SetPixel(pixelPos->getX() - i, pixelPos->getY() - j, color);
             }
         }
     }
@@ -139,6 +141,8 @@ RGBApixel codigoColorSegunCelda(TipoTerreno capaCelda){
             codigoColor = C_TESORO;
             break;
     }
+
+
     return codigoColor;
 }
 
@@ -151,14 +155,33 @@ bool capaExiste(TipoTerreno capaCelda){
 }
 
 RGBApixel getColor(Ficha* ficha, bool esFicha){
-    RGBApixel colorAux = (esFicha)? C_ESPIA : C_BLANCO;
-    if(esFicha){
-        std::cout << "True" << std::endl;
-    } else {
-        std::cout << "False" << std::endl;
-    }
+    /* RGBApixel colorAux = C_BLANCO;
     if(coloresSonIguales(colorAux, C_BLANCO)){
         colorAux = (capaExiste(ficha->getTipoTerreno()))? codigoColorSegunCelda(ficha->getTipoTerreno()) : colorAux;
+    }
+    return colorAux; */
+    RGBApixel colorAux = C_BLANCO;
+    if(esFicha){
+        switch(ficha->getTipo()){
+            case MINA:
+                colorAux = C_MINA;
+                break;
+            case TESORO:
+                colorAux = C_TESORO;
+                break;
+            case ESPIA:
+                colorAux = C_ESPIA;
+                break;
+            case VACIO:
+                colorAux = C_VACIO;
+                break;
+            case TESORO_DESENTERRADO:
+                colorAux = C_TESORO;
+                break;
+            case INACTIVO:
+                colorAux = C_INACTIVO;
+                break;
+        }
     }
     return colorAux;
 }
@@ -195,7 +218,7 @@ void imprimirBMP(Coordenada* imgSize, BMP* image, Tablero<Ficha*>* tablero, int 
                     aplicarProyeccionIsometrica(pixel, lado);
                     pixelPos->setX(static_cast<int>((pixel->getX()) * 20 + pixelOffset->getX())); 
                     pixelPos->setY(static_cast<int>((pixel->getY()) * 20 + pixelOffset->getY()));
-                    color = getColor(tablero->getTDataC(matrixPos), (tablero->getTDataC(matrixPos)->getJugadorOwner() == jugador && tablero->getTDataC(matrixPos)->getTipo() != TESORO));
+                    color = getColor(tablero->getTDataC(matrixPos), (tablero->getTDataC(matrixPos)->getJugadorOwner() == jugador));
                     pintarEntidad(image, pixelPos, color, imgSize);
                     matrixPos->setZ(matrixPos->getZ() + matrixPosDif->getZ());
                 }

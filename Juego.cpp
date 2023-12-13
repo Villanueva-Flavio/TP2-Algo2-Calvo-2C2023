@@ -139,6 +139,7 @@ void Juego::preguntarDecisionCarta(Decision* decision){
         *decision = NO;
     } else if (aux == "salir"){
         *decision = SALIR;
+        this->estadoPartida = -1;
     }
 }
 
@@ -257,12 +258,14 @@ void Juego::aplicarCarta(TipoCartas tipo){
 
 void Juego::handlerCarta(int res){
     Decision decision = NINGUNA;
-    this->preguntarDecisionCarta(&decision);
-    if(decision == SI){
-        this->jugadores->getLData(this->jugadores->getIter())->getMazo()->usarCarta((TipoCartas)res);
-        this->aplicarCarta((TipoCartas)res);
-    } else if (decision == SALIR){
-        this->estadoPartida = -1;
+    if(this->estadoPartida != -1){
+        this->preguntarDecisionCarta(&decision);
+        if(decision == SI){
+            this->jugadores->getLData(this->jugadores->getIter())->getMazo()->usarCarta((TipoCartas)res);
+            this->aplicarCarta((TipoCartas)res);
+        } else if (decision == SALIR){
+            this->estadoPartida = -1;
+        }
     }
 }
 
@@ -315,12 +318,14 @@ void Juego::imprimirMazo(){
 
 void Juego::handlerMazo(){
     Decision decision = NINGUNA;
-    this->preguntarDecisionMazo(&decision);
-    if(decision == SI){
-        this->imprimirMazo();
-        this->jugarCartaDelMazo();
-    } else if (decision == SALIR){
-        this->estadoPartida = -1;
+    if(estadoPartida != -1){
+        this->preguntarDecisionMazo(&decision);
+        if(decision == SI){
+            this->imprimirMazo();
+            this->jugarCartaDelMazo();
+        } else if (decision == SALIR){
+            this->estadoPartida = -1;
+        }
     }
 }
 
@@ -566,29 +571,31 @@ void Juego::handlerCoordenadaFicha(Coordenada* aux, TipoFichas tipoSrc){
 }
 
 void Juego::handlerFicha(TipoFichas tipoSrc){
-    system("clear");
-    Coordenada* aux = new Coordenada(0, 0, 0);
-    this->handlerCoordenadaFicha(aux, tipoSrc);
-    TipoFichas tipoDest = this->tablero->getTDataC(aux)->getTipo();
-    bool loopCheck = false;
-    while(!loopCheck){
-        switch(tipoSrc){
-            case MINA:
-                handlerMina(tipoDest, aux, &loopCheck);
-                break;
-            case ESPIA:
-                handlerEspia(tipoDest, aux, &loopCheck);
-                break;
-            case TESORO:
-            case TESORO_DESENTERRADO:
-                handlerTesoro(&loopCheck);
-                break;
-        }
-        if(!loopCheck){
-            system("clear");
-            cout << "Reintentá nuevamente" << endl;
-            this->handlerCoordenadaFicha(aux, tipoSrc);
-            tipoDest = this->tablero->getTDataC(aux)->getTipo();
+    if(this->estadoPartida != -1){
+        system("clear");
+        Coordenada* aux = new Coordenada(0, 0, 0);
+        this->handlerCoordenadaFicha(aux, tipoSrc);
+        TipoFichas tipoDest = this->tablero->getTDataC(aux)->getTipo();
+        bool loopCheck = false;
+        while(!loopCheck){
+            switch(tipoSrc){
+                case MINA:
+                    handlerMina(tipoDest, aux, &loopCheck);
+                    break;
+                case ESPIA:
+                    handlerEspia(tipoDest, aux, &loopCheck);
+                    break;
+                case TESORO:
+                case TESORO_DESENTERRADO:
+                    handlerTesoro(&loopCheck);
+                    break;
+            }
+            if(!loopCheck){
+                system("clear");
+                cout << "Reintentá nuevamente" << endl;
+                this->handlerCoordenadaFicha(aux, tipoSrc);
+                tipoDest = this->tablero->getTDataC(aux)->getTipo();
+            }
         }
     }
 }
