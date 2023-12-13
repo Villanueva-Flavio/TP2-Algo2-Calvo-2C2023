@@ -3,7 +3,6 @@
 
 //Colores terminal
 #define RES_COLOR       "\033[0m"
-#define RES_FONDO       "\u001b[0m"
 #define COLOR_NEGRO     "\033[30m" 
 #define COLOR_ROJO      "\033[31m" 
 #define COLOR_VERDE     "\033[32m" 
@@ -12,14 +11,8 @@
 #define COLOR_BLANCO    "\033[37m" 
 
 #define COLOR_NEGRO_NEGRITA    "\033[1m\033[30m"  
-#define COLOR_ROJO_NEGRITA     "\033[1m\033[31m"  
-
-#define FONDO_NEGRO      "\u001b[40m;1m"
-#define FONDO_ROJO       "\u001b[41m;1m"
-#define FONDO_VERDE      "\u001b[42m;1m"
-#define FONDO_AMARILLO   "\u001b[43m;1m"
-#define FONDO_AZUL       "\u001b[44m;1m"
-#define FONDO_BLANCO     "\u001b[47m;1m"
+#define COLOR_ROJO_NEGRITA     "\033[1m\033[31m" 
+#define COLOR_VERDE_NEGRITA    "\033[1m\033[32m" 
 
 //Lista
 enum Iteracion {

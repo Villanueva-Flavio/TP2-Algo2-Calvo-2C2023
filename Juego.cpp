@@ -63,18 +63,20 @@ Juego::~Juego(){
 
 string Juego::preguntarNombre(){
     string nombre;
-    cout << "Ingrese el nombre del jugador: ";
+    cout << COLOR_VERDE_NEGRITA << "Ingrese el nombre del jugador: " << COLOR_ROJO_NEGRITA;
     cin >> nombre;
+    cout << RES_COLOR;
     while(!this->validarNombre(nombre)){
-        cout << "Nombre invalido, ingrese otro: ";
+        cout << COLOR_ROJO_NEGRITA << "Nombre invalido, ingrese otro: " << COLOR_VERDE;
         cin >> nombre;
+        cout << RES_COLOR;
     }
     return nombre;
 }
 
 void Juego::cargarJugadores(int jugadores){
     for(int i = 0; i < jugadores; i ++){
-        cout << "Jugador " << i + 1 << endl;
+        cout << COLOR_ROJO << "Jugador " << i + 1 << endl << RES_COLOR ;
         std::string nombre = this->preguntarNombre();
         this->jugadores->add(new Jugador(nombre));
         system("clear");
@@ -92,7 +94,7 @@ void Juego::cargarTesoros(){
         cout << endl;
         (*aux) = (*aux) - 1;
         while(!this->validarLimitePosicion(aux) || !this->coordenadaValida(aux)){
-            cout << "Coordenada invalida, ingrese otra: ";
+            cout << COLOR_ROJO_NEGRITA << "Coordenada invalida, ingrese otra: " << RES_COLOR;
             cin >> *aux;
             cout << endl;
             (*aux) = (*aux) - 1;
@@ -131,7 +133,7 @@ void Juego::preguntarDecisionCarta(Decision* decision){
     cout << "Desea jugar la carta? (si/no/salir): ";
     cin >> aux;
     while(!this->validarDecisionCarta(aux)){
-        cout << "Decision invalida, ingrese otra: ";
+        cout << COLOR_ROJO_NEGRITA << "Decision invalida, ingrese otra: " << RES_COLOR;
         cin >> aux;
     }
     if(aux == "si"){
@@ -224,10 +226,10 @@ void Juego::agentesDurmientes(Jugador* jugador){
 void Juego::racimoBomba(Jugador* jugador){
     Coordenada* pos = new Coordenada(0, 0, 0);
     for(int mina = 0; mina < 5; mina++){
-        cout << "Ingrese la posicion donde desea colocar la mina"<< endl;
+        cout << COLOR_VERDE << "Ingrese la posicion donde desea colocar la mina" << RES_COLOR << endl;
         preguntarCoordenada(pos);
         while((this->tablero->getTDataC(pos)->getTipo() != VACIO) || (!this->validarLimitePosicion(pos))){
-            cout << "Coordenada incorrecta." << endl;
+            cout << COLOR_ROJO_NEGRITA << "Coordenada incorrecta." << RES_COLOR << endl;
             preguntarCoordenada(pos);
         }
         colocarFicha(MINA, pos);
@@ -274,12 +276,12 @@ void Juego::jugarCartaDelMazo(){
     system("clear");
     int index = this->jugadores->getLData(this->jugadores->getIter())->getMazo()->obtenerMazo()->getSize();
     int aux = 0;
-    cout << "Ingrese el numero de la carta que desea jugar o 0 si no desea ninguna: ";
+    cout << COLOR_VERDE << "Ingrese el numero de la carta que desea jugar o 0 si no desea ninguna: " << RES_COLOR;
     cin >> aux;
     aux--;
     cout << "Elegiste " << aux << "Con index: " << index << endl;
     while(aux >= index || aux < -1){
-        cout << "Numero de carta invalido, ingrese otro: ";
+        cout << COLOR_ROJO_NEGRITA << "Numero de carta invalido, ingrese otro: " << RES_COLOR;
         cin >> aux;
         aux--;
     }
@@ -292,10 +294,10 @@ void Juego::jugarCartaDelMazo(){
 
 void Juego::preguntarDecisionMazo(Decision* decision){
     string aux;
-    cout << "Desea ver el mazo? (si/no/salir): ";
+    cout << COLOR_VERDE << "Desea ver el mazo? (si/no/salir): " << RES_COLOR;
     cin >> aux;
     while(!this->validarDecisionCarta(aux)){
-        cout << "Decision invalida, ingrese otra: ";
+        cout << COLOR_ROJO_NEGRITA << "Decision invalida, ingrese otra: " << RES_COLOR;
         cin >> aux;
     }
     if(aux == "si"){
@@ -335,7 +337,7 @@ void Juego::recibirCarta(int* res){
     *res = (int)rng;
     Mazo* mazoActual = this->jugadores->getLData(this->jugadores->getIter())->getMazo();
     mazoActual->agregarCarta(rng);
-    cout << "Se ha recibido la carta: " << mazoActual->tipoDeCartaGlobal(mazoActual->obtenerCarta(rng)->getTipo()) << endl;
+    cout << COLOR_VERDE_NEGRITA << "Se ha recibido la carta: " << mazoActual->tipoDeCartaGlobal(mazoActual->obtenerCarta(rng)->getTipo()) << RES_COLOR << endl;
 }
 
 string Juego::getFichaTipoGlobal(TipoFichas tipo){
@@ -372,7 +374,7 @@ void Juego::checkEstadoPartida(){
     }
 
     if(jugadoresVivos == 0){
-        cout << "Exception: No players left" << endl;
+        cout << COLOR_ROJO_NEGRITA << "Exception: No players left" << RES_COLOR << endl;
         this->estadoPartida == -1;
     }
 }
@@ -383,7 +385,7 @@ void Juego::preguntarCoordenada(Coordenada* pos){
     cin >> *pos;
     (*pos) = (*pos) - 1;
     while(!this->validarLimitePosicion(pos)){
-        cout << "Coordenada invalida, ingrese otra: ";
+        cout << COLOR_ROJO_NEGRITA << "Coordenada invalida, ingrese otra: " << RES_COLOR;
         cin >> *pos;
         (*pos) = (*pos) - 1;
     }
@@ -482,7 +484,7 @@ void Juego::imprimirFichas(){
     for(int i = 0; i < jugadorActual->getLenFichas(); i++){
         Ficha* ficha = jugadorActual->getListaFichas()->getLData(i);
         string tipo = this->getFichaTipoGlobal(ficha->getTipo());
-        cout << "Ficha " << i + 1 << ": " << tipo << " en " << ficha->getPosicion() + 1 << endl;
+        cout << COLOR_BLANCO << "Ficha " << i + 1 << ": " << tipo << " en " << ficha->getPosicion() + 1 << RES_COLOR << endl;
     }
 
 }
@@ -501,11 +503,11 @@ bool Juego::distanciaContigua(Coordenada* c1, Coordenada* c2){
 void Juego::seleccionarTesoro(int* fichaSeleccionada, Coordenada* auxSrc, Coordenada* auxDest){
     Coordenada* aux;
     this->imprimirFichas();
-    cout << "Ingrese el numero de la ficha que desea seleccionar: ";
+    cout << COLOR_VERDE << "Ingrese el numero de la ficha que desea seleccionar: " << RES_COLOR;
     cin >> *fichaSeleccionada;
     (*fichaSeleccionada) --;
     while(!this->validarNumeroFicha(*fichaSeleccionada)){
-        cout << "Numero de ficha invalido, ingrese otro: ";
+        cout << COLOR_ROJO_NEGRITA << "Numero de ficha invalido, ingrese otro: " << RES_COLOR;
         cin >> *fichaSeleccionada;
         (*fichaSeleccionada) --;
     }
@@ -513,7 +515,7 @@ void Juego::seleccionarTesoro(int* fichaSeleccionada, Coordenada* auxSrc, Coorde
     system("clear");
     preguntarCoordenada(auxDest);
     while(!distanciaContigua(aux, auxDest)){
-        cout << "Las coordenadas no son contiguas a: " << *aux <<", ingrese otras: ";
+        cout << COLOR_ROJO_NEGRITA << "Las coordenadas no son contiguas a: " << *aux <<", ingrese otras: " << RES_COLOR;
         preguntarCoordenada(auxDest);
     }
 }
@@ -530,28 +532,28 @@ void Juego::handlerTesoro(bool* loopCheck){
     switch(tipoDest){
         case MINA:
             if(jugadorActual != jugadorDest){
-                cout << "Moviste el tesoro sobre una mina, queda desenterrado" << endl;
+                cout << COLOR_ROJO << "Moviste el tesoro sobre una mina, queda desenterrado" << RES_COLOR << endl;
                 this->colocarFichaN(TESORO_DESENTERRADO, auxDest, jugadorActual);
                 this->colocarFichaN(VACIO, auxSrc, 0);
                 *loopCheck = true;
                 break;
             }
-            cout << "No podes llevar un tesoro propio sobre una mina propia" << endl;
+            cout << COLOR_ROJO << "No podes llevar un tesoro propio sobre una mina propia" << RES_COLOR << endl;
             break;
 
         case TESORO:
-            cout << "Hay un tesoro en esa ubicación" << endl;
+            cout << COLOR_AMARILLO << "Hay un tesoro en esa ubicación" << RES_COLOR << endl;
             break;
 
         case ESPIA:
             if(jugadorActual != jugadorDest){
-                cout << "Un espía encontro tu tesoro" << endl;
+                cout << COLOR_ROJO << "Un espía encontro tu tesoro" << RES_COLOR << endl;
                 this->colocarFichaN(VACIO, auxDest, 0);
                 this->colocarFichaN(VACIO, auxSrc, 0);
                 *loopCheck = true;
                 break;
             }
-            cout << "No se puede superponer tu espía con tu tesoro" << endl;
+            cout << COLOR_ROJO << "No se puede superponer tu espía con tu tesoro" << RES_COLOR << endl;
             break;
 
         case VACIO:
@@ -593,7 +595,7 @@ void Juego::handlerFicha(TipoFichas tipoSrc){
             }
             if(!loopCheck){
                 system("clear");
-                cout << "Reintentá nuevamente" << endl;
+                cout << COLOR_ROJO << "Reintentá nuevamente" << RES_COLOR << endl;
                 this->handlerCoordenadaFicha(aux, tipoSrc);
                 tipoDest = this->tablero->getTDataC(aux)->getTipo();
             }
