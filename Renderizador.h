@@ -202,7 +202,10 @@ int matrixPosStarter(int lado, int size){
 
 void imprimirBMP(Coordenada* imgSize, BMP* image, Tablero<Ficha*>* tablero, int jugador){
     RGBApixel color;
-    Coordenada* pixelPos = new Coordenada(0, 0, 0), *matrixPos = new Coordenada(0, 0, 0), *matrixPosDif = new Coordenada(0, 0, 0), *pixelOffset = new Coordenada(0, 0, 0);
+    Coordenada* pixelPos = new Coordenada(0, 0, 0);
+    Coordenada* matrixPos = new Coordenada(0, 0, 0);
+    Coordenada* matrixPosDif = new Coordenada(0, 0, 0);
+    Coordenada* pixelOffset = new Coordenada(0, 0, 0);
     CoordenadaDouble* pixel = new CoordenadaDouble(0, 0, 0);
     for(int lado = 0; lado < 3; lado ++){
         getDif(lado, matrixPosDif);
@@ -226,7 +229,8 @@ void imprimirBMP(Coordenada* imgSize, BMP* image, Tablero<Ficha*>* tablero, int 
             matrixPos->setX(matrixPos->getX() + matrixPosDif->getX());
         }
     }
-    delete pixelPos, matrixPos, matrixPosDif, pixelOffset, pixel;
+    delete pixelPos, matrixPos, matrixPosDif, pixelOffset;
+    delete pixel;
 }
 
 #endif

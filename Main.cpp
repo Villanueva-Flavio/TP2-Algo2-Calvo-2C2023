@@ -21,5 +21,6 @@ int main(){
     preguntarCantidadJugadores(&jugadores);
     Juego* juego = new Juego(jugadores);
     juego->jugar();
+    delete juego;
     return 0;
 }

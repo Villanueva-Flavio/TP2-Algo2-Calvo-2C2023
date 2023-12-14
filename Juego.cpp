@@ -46,7 +46,6 @@ void Juego::jugar(){
     if(this->estadoPartida > 0){
         cout << "El jugador " << this->jugadores->getLData(this->estadoPartida -1)->getNombre() << " ha ganado la partida" << endl;
     }
-    this->~Juego();
 }
 
 int Juego::mostrarEstadoPartida(){
@@ -78,7 +77,8 @@ void Juego::cargarJugadores(int jugadores){
     for(int i = 0; i < jugadores; i ++){
         cout << COLOR_ROJO << "Jugador " << i + 1 << endl << RES_COLOR ;
         std::string nombre = this->preguntarNombre();
-        this->jugadores->add(new Jugador(nombre));
+        Jugador* jugador = new Jugador(nombre);
+        this->jugadores->add(jugador);
         system("clear");
         this->cargarTesoros();
     }
@@ -169,7 +169,8 @@ void Juego::radar(Jugador* player){
             for(int k = 0; k < 3; k++){
                 Ficha* fichaActual = this->tablero->getTData(i, j, k);
                 if(this->tablero->inRange(i, j, k) && fichaActual->getTipo() != VACIO && fichaActual->getJugadorOwner() != this->jugadores->getIter()){
-                    cout <<"Hay un " << this->getFichaTipoGlobal(fichaActual->getTipo()) << " en la casilla: " << fichaActual->getPosicion() << endl;
+                    string alerta = "Se ha encontrado una ficha " + this->getFichaTipoGlobal(fichaActual->getTipo()) + " en la posicion " + IntToString(i) + " " + IntToString(j) + " " + IntToString(k) + "\n";
+                    this->mostrarAlertas(alerta, this->jugadores->getLData(this->jugadores->getIter()));
                 } 
             }
         }
@@ -493,7 +494,7 @@ void Juego::imprimirFichas(){
 }
 
 bool Juego::validarNumeroFicha(int index){
-    return index > 0 && index < this->jugadores->getLData(this->jugadores->getIter())->getTesorosRestantes();
+    return index >= 0 && index < this->jugadores->getLData(this->jugadores->getIter())->getTesorosRestantes();
 }
 
 bool Juego::distanciaContigua(Coordenada* c1, Coordenada* c2){
@@ -504,7 +505,6 @@ bool Juego::distanciaContigua(Coordenada* c1, Coordenada* c2){
 }
 
 void Juego::seleccionarTesoro(int* fichaSeleccionada, Coordenada* auxSrc, Coordenada* auxDest){
-    Coordenada* aux;
     this->imprimirFichas();
     cout << COLOR_VERDE << "Ingrese el numero de la ficha que desea seleccionar: " << RES_COLOR;
     cin >> *fichaSeleccionada;
@@ -514,24 +514,22 @@ void Juego::seleccionarTesoro(int* fichaSeleccionada, Coordenada* auxSrc, Coorde
         cin >> *fichaSeleccionada;
         (*fichaSeleccionada) --;
     }
-    aux = new Coordenada(this->jugadores->getLData(this->jugadores->getIter())->getListaFichas()->getLData(*fichaSeleccionada)->getPosicion());
+    *auxSrc = this->jugadores->getLData(this->jugadores->getIter())->getListaFichas()->getLData(*fichaSeleccionada)->getPosicion();
     system("clear");
     preguntarCoordenada(auxDest);
-    while(!distanciaContigua(aux, auxDest)){
-        cout << COLOR_ROJO_NEGRITA << "Las coordenadas no son contiguas a: " << *aux <<", ingrese otras: " << RES_COLOR;
+    while(!distanciaContigua(auxSrc, auxDest)){
+        cout << COLOR_ROJO_NEGRITA << "Las coordenadas no son contiguas a: " << (*auxSrc) + 1 <<", ingrese otras: " << RES_COLOR;
         preguntarCoordenada(auxDest);
     }
-    delete aux; //REMINDER
 }
 
 void Juego::handlerTesoro(bool* loopCheck){
     Coordenada* auxDest = new Coordenada(0, 0, 0);
-    Coordenada* auxSrc;
+    Coordenada* auxSrc = new Coordenada(0, 0, 0);
     int fichaSeleccionada = 0;
     this->seleccionarTesoro(&fichaSeleccionada, auxSrc, auxDest);
     int jugadorActual = this->jugadores->getIter();
     int jugadorDest = this->tablero->getTDataC(auxDest)->getJugadorOwner();
-    TipoFichas tipoSrc = this->tablero->getTDataC(auxSrc)->getTipo();
     TipoFichas tipoDest = this->tablero->getTDataC(auxDest)->getTipo();
     switch(tipoDest){
         case MINA:
@@ -539,6 +537,7 @@ void Juego::handlerTesoro(bool* loopCheck){
                 cout << COLOR_ROJO << "Moviste el tesoro sobre una mina, queda desenterrado" << RES_COLOR << endl;
                 this->colocarFichaN(TESORO_DESENTERRADO, auxDest, jugadorActual);
                 this->colocarFichaN(VACIO, auxSrc, 0);
+                this->jugadores->getLData(jugadorDest)->getListaFichas()->getLData(fichaSeleccionada)->setPosicion(*auxDest);
                 *loopCheck = true;
                 break;
             }
@@ -551,9 +550,10 @@ void Juego::handlerTesoro(bool* loopCheck){
 
         case ESPIA:
             if(jugadorActual != jugadorDest){
-                cout << COLOR_ROJO << "Un espía encontro tu tesoro" << RES_COLOR << endl;
+                cout << COLOR_ROJO << "Un espía encontro un tesoro" << RES_COLOR << endl;
                 this->colocarFichaN(VACIO, auxDest, 0);
                 this->colocarFichaN(VACIO, auxSrc, 0);
+                this->jugadores->getLData(jugadorDest)->getListaFichas()->remove(fichaSeleccionada);
                 *loopCheck = true;
                 break;
             }
@@ -561,8 +561,9 @@ void Juego::handlerTesoro(bool* loopCheck){
             break;
 
         case VACIO:
-            this->colocarFichaN(tipoSrc, auxDest, jugadorActual);
+            this->colocarFichaN(TESORO, auxDest, jugadorActual);
             this->colocarFichaN(VACIO, auxSrc, 0);
+            this->jugadores->getLData(jugadorDest)->getListaFichas()->getLData(fichaSeleccionada)->setPosicion(*auxDest);
             *loopCheck = true;
             break;
     }
@@ -604,18 +605,36 @@ void Juego::handlerFicha(TipoFichas tipoSrc){
                 tipoDest = this->tablero->getTDataC(aux)->getTipo();
             }
         }
+        delete aux;
     }
 }
 
+bool Juego::crearDirectorio(const char* path) {
+    #ifdef _WIN32
+    return _mkdir(path) == 0;
+    #else
+    return system(("mkdir -p " + std::string(path)).c_str()) == 0;
+    #endif
+}
+
 void Juego::mostrarAlertas(string alerta, Jugador* jugadorActual){
-    string fileName = "Alertas_" + jugadorActual->getNombre() + ".txt";
+    string fileName = "Partida/Alertas_" + jugadorActual->getNombre() + ".txt";
+    if(!this->crearDirectorio("Partida")){
+        cout << COLOR_ROJO_NEGRITA << "Error al crear el directorio" << RES_COLOR << endl;
+        exit(1);
+    }
     FILE* archivo = fopen(fileName.c_str(), "a");
-    fprintf(archivo, "%s\n", alerta.c_str());
-    fclose(archivo);
+    if(archivo != nullptr){
+        fprintf(archivo, "%s\n", alerta.c_str());
+        fclose(archivo);
+    } else {
+        cout << COLOR_ROJO_NEGRITA << "Error al abrir el archivo" << RES_COLOR << endl;
+        exit(1);
+    }
 }
 
 void Juego::limpiarArchivo(Jugador* jugadorActual){
-    string fileName = "Alertas_" + jugadorActual->getNombre() + ".txt";
+    string fileName = "Partida/Alertas_" + jugadorActual->getNombre() + ".txt";
     FILE* archivo = fopen(fileName.c_str(), "w");
     fclose(archivo);
 }
@@ -627,10 +646,15 @@ void Juego::sacarFoto(){
     BMP* imagen = new BMP();
     imagen->SetSize(imgSize->getX(), imgSize->getY());
     imprimirBMP(imgSize, imagen, this->tablero, this->jugadores->getIter());
-    string fileName = "Tablero_" + jugadorActual->getNombre() + ".bmp";
-    imagen->WriteToFile(fileName.c_str());
+    string fileName = "Partida/Tablero_" + jugadorActual->getNombre() + ".bmp";
+    if(this->crearDirectorio("Partida")){
+        imagen->WriteToFile(fileName.c_str());
+    } else {
+        cout << COLOR_ROJO_NEGRITA << "Error al crear el directorio" << RES_COLOR << endl;
+        exit(1);
+    }
     delete imagen;
-    delete imgSize;
+    delete imgSize;    
 }
 
 void Juego::jugarTurno(){

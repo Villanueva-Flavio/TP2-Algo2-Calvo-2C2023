@@ -3,12 +3,6 @@
 ./Compilar
 ./Juego
 .vscode/
-./nota_para_profesor.txt
-./Alertas_A.txt
-Alertas_a.txt
-./Alertas_B.txt
-Alertas_B.txt
-Tablero_A.bmp
-Tablero_B.bmp
-Tablero_A.BMP
-Tablero_B.BMP
+./Partida
+./Partida/*.txt
+./Partida/*.bmp

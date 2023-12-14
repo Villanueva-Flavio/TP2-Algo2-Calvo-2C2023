@@ -11,6 +11,7 @@ public:
     void iniciarJuego(int jugadores);
     void jugar();
     int mostrarEstadoPartida();
+    ~Juego();
 
 private:
     //Atributos
@@ -18,9 +19,9 @@ private:
     Tablero<Ficha*>* tablero;
     Lista<Ficha*>* inactivas;
     int estadoPartida;
-    ~Juego();
 
     //Iniciar juego
+    bool crearDirectorio(const char* path);
     void cargarTablero(); 
     void cargarTesoros();
     std::string preguntarNombre();
