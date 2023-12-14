@@ -4,6 +4,10 @@
 Bienvenido al repositorio del juego que he creado para la cátedra Calvo (01) de Algoritmos y Programación 2, 2C2023 de FIUBA
 Dicho juego consiste en una mezcla de Batalla naval pero más enfocado en busqueda y recuperación de tesoros
 El juego fue diseñado para sacar fotos para cada jugador para cada tablero por separado, en formato 3D con 3 perspectivas distintas.
+
+![image](https://github.com/Villanueva-Flavio/TP2-Algo2-Calvo-2C2023/assets/78744163/b532200a-c413-4d5f-8235-24d61dabfdb1)
+(Imágen de muestra donde ![image](https://github.com/Villanueva-Flavio/TP2-Algo2-Calvo-2C2023/assets/78744163/be6ca265-18b9-4514-ad0a-4fed68bff536) son los tesoros y donde ![image](https://github.com/Villanueva-Flavio/TP2-Algo2-Calvo-2C2023/assets/78744163/37becf7e-fcbd-4c77-8976-bb0544adb643) son los espías)
+
 Que lo disfrutes, y no dudes en contactarme si tenés alguna duda.
 
 
