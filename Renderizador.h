@@ -155,11 +155,6 @@ bool capaExiste(TipoTerreno capaCelda){
 }
 
 RGBApixel getColor(Ficha* ficha, bool esFicha){
-    /* RGBApixel colorAux = C_BLANCO;
-    if(coloresSonIguales(colorAux, C_BLANCO)){
-        colorAux = (capaExiste(ficha->getTipoTerreno()))? codigoColorSegunCelda(ficha->getTipoTerreno()) : colorAux;
-    }
-    return colorAux; */
     RGBApixel colorAux = C_VACIO;
     if(esFicha){
         switch(ficha->getTipo()){
